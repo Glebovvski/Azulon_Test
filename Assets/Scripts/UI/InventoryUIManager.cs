@@ -61,7 +61,7 @@ public class InventoryUIManager : MonoBehaviour
         amount.text = $"{item.amount}";
         image.sprite = item.data.icon;
 
-        itemEl.userData = item;
+        itemEl.userData = item.data;
         return itemEl;
     }
 }
