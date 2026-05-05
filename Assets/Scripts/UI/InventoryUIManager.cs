@@ -27,7 +27,11 @@ public class InventoryUIManager : MonoBehaviour
         for (int i = 0; i < inventroySize; i++)
         {
             if (i < defaultInventoryList.List.Count)
-                slots[i].Add(CreateItem(defaultInventoryList.List[i]));
+            {
+                var inventoryItem = CreateItem(defaultInventoryList.List[i]);
+                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, slots[i], inventory, null));
+                slots[i].Add(inventoryItem);
+            }
             else
                 break;
         }
@@ -38,6 +42,7 @@ public class InventoryUIManager : MonoBehaviour
         VisualElement slot = new VisualElement();
         slot.pickingMode = PickingMode.Ignore;
         slot.AddToClassList("slot");
+        slot.name = "slot";
         return slot;
     }
 

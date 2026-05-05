@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -23,17 +24,19 @@ public class TooltipController : MonoBehaviour
     {
         root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
         root.RegisterCallback<PointerLeaveEvent>(OnPointerLeave);
+        root.RegisterCallback<PointerDownEvent>(OnPointerDown);
     }
 
     void OnDisable()
     {
         root.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
         root.UnregisterCallback<PointerLeaveEvent>(OnPointerLeave);
+        root.UnregisterCallback<PointerDownEvent>(OnPointerDown);
     }
 
     private void OnPointerMove(PointerMoveEvent evt)
     {
-        if (evt.target is not VisualElement item)
+        if (evt.target is not VisualElement item || evt.button == 0)
         {
             HideTooltip();
             return;
@@ -72,5 +75,8 @@ public class TooltipController : MonoBehaviour
         HideTooltip();
     }
 
-
+    private void OnPointerDown(PointerDownEvent evt)
+    {
+        HideTooltip();
+    }
 }

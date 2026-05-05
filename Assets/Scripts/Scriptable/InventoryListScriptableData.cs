@@ -9,7 +9,7 @@ public class InventoryListScriptableData : ScriptableObject
 }
 
 [Serializable]
-public class InventoryData
+public struct InventoryData
 {
     public InventoryScriptableData data;
     public int amount;

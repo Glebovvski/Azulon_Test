@@ -12,4 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 213a3ddeaeb335349808ec3ddd1145a3, type: 3}
   m_Name: Inventory Item List
   m_EditorClassIdentifier: Assembly-CSharp::InventoryListScriptableData
-  List: []
+  List:
+  - data: {fileID: 11400000, guid: 85d7007caf4ff824f806fce7ce97f910, type: 2}
+    amount: 4
+  - data: {fileID: 11400000, guid: 72ae1976aee3fa34e895cf928fca2a96, type: 2}
+    amount: 4
+  - data: {fileID: 11400000, guid: 480a933492209e04daf1eccc9fd521d9, type: 2}
+    amount: 4
+  - data: {fileID: 11400000, guid: 27a7e153650e0c2448fd75d66172e541, type: 2}
+    amount: 7
+  - data: {fileID: 11400000, guid: 0d15880ae4988e244bc748a3c4334496, type: 2}
+    amount: 2
+  - data: {fileID: 11400000, guid: 34ad4bb9126dcab46a07be9aebc3c574, type: 2}
+    amount: 2
+  - data: {fileID: 11400000, guid: 3bee73a6851a5ec40a5024b36ff25cc1, type: 2}
+    amount: 6
+  - data: {fileID: 11400000, guid: a920cf1fc8de1894b9dc1e7f43606dff, type: 2}
+    amount: 4
+  - data: {fileID: 11400000, guid: 0b81eb70edf912f49bd5f82eb5c035f9, type: 2}
+    amount: 2
+  - data: {fileID: 11400000, guid: 695c0836e6d7c394eba072b9617f50d1, type: 2}
+    amount: 2
+  - data: {fileID: 11400000, guid: 4b565c8f9bf856d4797af669e940c222, type: 2}
+    amount: 6
+  - data: {fileID: 11400000, guid: 53ca43f611392a94e872e9786517f0ee, type: 2}
+    amount: 7
+  - data: {fileID: 11400000, guid: dd280147bdc4d9543b229945062062d1, type: 2}
+    amount: 2

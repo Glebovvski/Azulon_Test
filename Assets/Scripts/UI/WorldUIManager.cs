@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -10,8 +11,11 @@ public class WorldUIManager : MonoBehaviour
     private VisualElement root;
     private VisualElement world;
 
+    [SerializeField] private List<InventoryUIData> inventoryUIData;
+
     void OnEnable()
     {
+        inventoryUIData = new();
         root = uiDoc.rootVisualElement;
         FillWorldInventory();
     }
@@ -24,8 +28,11 @@ public class WorldUIManager : MonoBehaviour
             for (int j = 0; j < item.amount; j++)
             {
                 var slot = CreateSlot();
-                slot.Add(CreateItem(item.data));
+                var inventoryItem = CreateItem(item.data);
+                slot.Add(inventoryItem);
+                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, slot, world, null));
                 world.Add(slot);
+                inventoryUIData.Add(new InventoryUIData(item, slot, false, inventoryUIData.Count));
             }
         }
     }
@@ -35,6 +42,8 @@ public class WorldUIManager : MonoBehaviour
         VisualElement slot = new VisualElement();
         slot.pickingMode = PickingMode.Ignore;
         slot.AddToClassList("slot");
+        slot.name="slot";
+
         return slot;
     }
 
