@@ -1,0 +1,55 @@
+.title {
+    height: 10%;
+    width: 100%;
+}
+
+.slot {
+    flex-grow: 0;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0);
+    align-items: center;
+    align-self: center;
+    flex-shrink: 0;
+    border-color: rgb(12, 65, 109);
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    flex-grow: 0;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(0, 0, 0, 0);
+    align-items: center;
+    align-self: center;
+    flex-shrink: 0;
+    border-left-color: rgb(12, 65, 109);
+    border-right-color: rgb(12, 65, 109);
+    border-top-color: rgb(12, 65, 109);
+    border-bottom-color: rgb(12, 65, 109);
+    border-top-width: 10px;
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+    border-left-width: 10px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.slot .slot-active
+{
+    border-color: rgb(199, 94, 9);
+}
