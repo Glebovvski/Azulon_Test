@@ -1,0 +1,807 @@
+[
+  {
+    "id": "rope",
+    "name": "Rope",
+    "description": "A sturdy rope useful for climbing, tying, or securing objects.",
+    "key": 0,
+    "iconPath": "Assets/Icons/Inventory/rope.png"
+  },
+  {
+    "id": "ladder",
+    "name": "Ladder",
+    "description": "A portable ladder for reaching high places.",
+    "key": 1,
+    "iconPath": "Assets/Icons/Inventory/ladder.png"
+  },
+  {
+    "id": "flashlight",
+    "name": "Flashlight",
+    "description": "A handheld light source for dark areas.",
+    "key": 2,
+    "iconPath": "Assets/Icons/Inventory/flashlight.png"
+  },
+  {
+    "id": "battery",
+    "name": "Battery",
+    "description": "A power source for electronic devices.",
+    "key": 3,
+    "iconPath": "Assets/Icons/Inventory/battery.png"
+  },
+  {
+    "id": "toolbox",
+    "name": "Toolbox",
+    "description": "A box containing various repair tools.",
+    "key": 4,
+    "iconPath": "Assets/Icons/Inventory/toolbox.png"
+  },
+  {
+    "id": "hammer",
+    "name": "Hammer",
+    "description": "A basic tool used for construction and repairs.",
+    "key": 5,
+    "iconPath": "Assets/Icons/Inventory/hammer.png"
+  },
+  {
+    "id": "wrench",
+    "name": "Wrench",
+    "description": "A tool used to tighten or loosen bolts.",
+    "key": 6,
+    "iconPath": "Assets/Icons/Inventory/wrench.png"
+  },
+  {
+    "id": "screwdriver",
+    "name": "Screwdriver",
+    "description": "A tool used to drive screws into surfaces.",
+    "key": 7,
+    "iconPath": "Assets/Icons/Inventory/screwdriver.png"
+  },
+  {
+    "id": "pickaxe",
+    "name": "Pickaxe",
+    "description": "A heavy tool used for mining or breaking hard material.",
+    "key": 8,
+    "iconPath": "Assets/Icons/Inventory/pickaxe.png"
+  },
+  {
+    "id": "axe",
+    "name": "Axe",
+    "description": "A chopping tool for wood or obstacles.",
+    "key": 9,
+    "iconPath": "Assets/Icons/Inventory/axe.png"
+  },
+  {
+    "id": "shovel",
+    "name": "Shovel",
+    "description": "A digging tool for soil, sand, or debris.",
+    "key": 10,
+    "iconPath": "Assets/Icons/Inventory/shovel.png"
+  },
+  {
+    "id": "saw",
+    "name": "Saw",
+    "description": "A cutting tool used on wood or metal.",
+    "key": 11,
+    "iconPath": "Assets/Icons/Inventory/saw.png"
+  },
+  {
+    "id": "drill",
+    "name": "Drill",
+    "description": "A powered tool used to make holes.",
+    "key": 12,
+    "iconPath": "Assets/Icons/Inventory/drill.png"
+  },
+  {
+    "id": "pliers",
+    "name": "Pliers",
+    "description": "A gripping tool used for bending or holding small objects.",
+    "key": 13,
+    "iconPath": "Assets/Icons/Inventory/pliers.png"
+  },
+  {
+    "id": "tape_measure",
+    "name": "Tape Measure",
+    "description": "A measuring tool for checking length and distance.",
+    "key": 14,
+    "iconPath": "Assets/Icons/Inventory/tape_measure.png"
+  },
+  {
+    "id": "knife",
+    "name": "Knife",
+    "description": "A compact cutting tool for utility or defense.",
+    "key": 15,
+    "iconPath": "Assets/Icons/Inventory/knife.png"
+  },
+  {
+    "id": "baton",
+    "name": "Baton",
+    "description": "A blunt item used for protection or crowd control.",
+    "key": 16,
+    "iconPath": "Assets/Icons/Inventory/baton.png"
+  },
+  {
+    "id": "bow",
+    "name": "Bow",
+    "description": "A ranged weapon that uses arrows.",
+    "key": 17,
+    "iconPath": "Assets/Icons/Inventory/bow.png"
+  },
+  {
+    "id": "arrow",
+    "name": "Arrow",
+    "description": "A projectile used with a bow.",
+    "key": 18,
+    "iconPath": "Assets/Icons/Inventory/arrow.png"
+  },
+  {
+    "id": "pistol",
+    "name": "Pistol",
+    "description": "A compact sidearm item for ranged combat.",
+    "key": 19,
+    "iconPath": "Assets/Icons/Inventory/pistol.png"
+  },
+  {
+    "id": "rifle",
+    "name": "Rifle",
+    "description": "A long-range firearm item.",
+    "key": 20,
+    "iconPath": "Assets/Icons/Inventory/rifle.png"
+  },
+  {
+    "id": "shotgun",
+    "name": "Shotgun",
+    "description": "A close-range firearm item with high impact.",
+    "key": 21,
+    "iconPath": "Assets/Icons/Inventory/shotgun.png"
+  },
+  {
+    "id": "machine_gun",
+    "name": "Machine Gun",
+    "description": "A heavy automatic weapon item for sustained fire.",
+    "key": 22,
+    "iconPath": "Assets/Icons/Inventory/machine_gun.png"
+  },
+  {
+    "id": "ammo_box",
+    "name": "Ammo Box",
+    "description": "A container of ammunition for ranged weapons.",
+    "key": 23,
+    "iconPath": "Assets/Icons/Inventory/ammo_box.png"
+  },
+  {
+    "id": "grenade",
+    "name": "Grenade",
+    "description": "A throwable explosive item.",
+    "key": 24,
+    "iconPath": "Assets/Icons/Inventory/grenade.png"
+  },
+  {
+    "id": "smoke_grenade",
+    "name": "Smoke Grenade",
+    "description": "A throwable item that creates a smoke cloud.",
+    "key": 25,
+    "iconPath": "Assets/Icons/Inventory/smoke_grenade.png"
+  },
+  {
+    "id": "shield",
+    "name": "Shield",
+    "description": "A defensive item used to block attacks.",
+    "key": 26,
+    "iconPath": "Assets/Icons/Inventory/shield.png"
+  },
+  {
+    "id": "helmet",
+    "name": "Helmet",
+    "description": "Protective headgear for dangerous environments.",
+    "key": 27,
+    "iconPath": "Assets/Icons/Inventory/helmet.png"
+  },
+  {
+    "id": "body_armor",
+    "name": "Body Armor",
+    "description": "Protective clothing that reduces damage.",
+    "key": 28,
+    "iconPath": "Assets/Icons/Inventory/body_armor.png"
+  },
+  {
+    "id": "boots",
+    "name": "Boots",
+    "description": "Durable footwear for rough terrain.",
+    "key": 29,
+    "iconPath": "Assets/Icons/Inventory/boots.png"
+  },
+  {
+    "id": "gloves",
+    "name": "Gloves",
+    "description": "Protective handwear for work or survival.",
+    "key": 30,
+    "iconPath": "Assets/Icons/Inventory/gloves.png"
+  },
+  {
+    "id": "gas_mask",
+    "name": "Gas Mask",
+    "description": "Protective mask for hazardous air.",
+    "key": 31,
+    "iconPath": "Assets/Icons/Inventory/gas_mask.png"
+  },
+  {
+    "id": "hazmat_suit",
+    "name": "Hazmat Suit",
+    "description": "Full-body protection against dangerous substances.",
+    "key": 32,
+    "iconPath": "Assets/Icons/Inventory/hazmat_suit.png"
+  },
+  {
+    "id": "medkit",
+    "name": "Medkit",
+    "description": "A medical kit used to treat injuries.",
+    "key": 33,
+    "iconPath": "Assets/Icons/Inventory/medkit.png"
+  },
+  {
+    "id": "bandage",
+    "name": "Bandage",
+    "description": "A small medical item for minor wounds.",
+    "key": 34,
+    "iconPath": "Assets/Icons/Inventory/bandage.png"
+  },
+  {
+    "id": "painkillers",
+    "name": "Painkillers",
+    "description": "Medicine used to reduce pain.",
+    "key": 35,
+    "iconPath": "Assets/Icons/Inventory/painkillers.png"
+  },
+  {
+    "id": "antidote",
+    "name": "Antidote",
+    "description": "A treatment for poison or toxins.",
+    "key": 36,
+    "iconPath": "Assets/Icons/Inventory/antidote.png"
+  },
+  {
+    "id": "syringe",
+    "name": "Syringe",
+    "description": "A medical injector for emergency use.",
+    "key": 37,
+    "iconPath": "Assets/Icons/Inventory/syringe.png"
+  },
+  {
+    "id": "first_aid_spray",
+    "name": "First Aid Spray",
+    "description": "A quick-use healing item.",
+    "key": 38,
+    "iconPath": "Assets/Icons/Inventory/first_aid_spray.png"
+  },
+  {
+    "id": "water_bottle",
+    "name": "Water Bottle",
+    "description": "A bottle of drinkable water.",
+    "key": 39,
+    "iconPath": "Assets/Icons/Inventory/water_bottle.png"
+  },
+  {
+    "id": "canteen",
+    "name": "Canteen",
+    "description": "A reusable container for carrying water.",
+    "key": 40,
+    "iconPath": "Assets/Icons/Inventory/canteen.png"
+  },
+  {
+    "id": "food_ration",
+    "name": "Food Ration",
+    "description": "A preserved meal for survival situations.",
+    "key": 41,
+    "iconPath": "Assets/Icons/Inventory/food_ration.png"
+  },
+  {
+    "id": "bread",
+    "name": "Bread",
+    "description": "A simple food item that restores energy.",
+    "key": 42,
+    "iconPath": "Assets/Icons/Inventory/bread.png"
+  },
+  {
+    "id": "apple",
+    "name": "Apple",
+    "description": "A fresh fruit snack.",
+    "key": 43,
+    "iconPath": "Assets/Icons/Inventory/apple.png"
+  },
+  {
+    "id": "meat",
+    "name": "Meat",
+    "description": "A protein-rich food item.",
+    "key": 44,
+    "iconPath": "Assets/Icons/Inventory/meat.png"
+  },
+  {
+    "id": "energy_drink",
+    "name": "Energy Drink",
+    "description": "A drink that restores stamina.",
+    "key": 45,
+    "iconPath": "Assets/Icons/Inventory/energy_drink.png"
+  },
+  {
+    "id": "coffee",
+    "name": "Coffee",
+    "description": "A hot drink that boosts alertness.",
+    "key": 46,
+    "iconPath": "Assets/Icons/Inventory/coffee.png"
+  },
+  {
+    "id": "map",
+    "name": "Map",
+    "description": "A navigation item showing nearby locations.",
+    "key": 47,
+    "iconPath": "Assets/Icons/Inventory/map.png"
+  },
+  {
+    "id": "compass",
+    "name": "Compass",
+    "description": "A tool used to determine direction.",
+    "key": 48,
+    "iconPath": "Assets/Icons/Inventory/compass.png"
+  },
+  {
+    "id": "binoculars",
+    "name": "Binoculars",
+    "description": "An optical tool for viewing distant objects.",
+    "key": 49,
+    "iconPath": "Assets/Icons/Inventory/binoculars.png"
+  },
+  {
+    "id": "radio",
+    "name": "Radio",
+    "description": "A communication device for receiving broadcasts.",
+    "key": 50,
+    "iconPath": "Assets/Icons/Inventory/radio.png"
+  },
+  {
+    "id": "walkie_talkie",
+    "name": "Walkie Talkie",
+    "description": "A short-range communication device.",
+    "key": 51,
+    "iconPath": "Assets/Icons/Inventory/walkie_talkie.png"
+  },
+  {
+    "id": "gps",
+    "name": "GPS Device",
+    "description": "An electronic device used for location tracking.",
+    "key": 52,
+    "iconPath": "Assets/Icons/Inventory/gps.png"
+  },
+  {
+    "id": "notebook",
+    "name": "Notebook",
+    "description": "A small book for writing notes.",
+    "key": 53,
+    "iconPath": "Assets/Icons/Inventory/notebook.png"
+  },
+  {
+    "id": "pen",
+    "name": "Pen",
+    "description": "A writing tool.",
+    "key": 54,
+    "iconPath": "Assets/Icons/Inventory/pen.png"
+  },
+  {
+    "id": "key",
+    "name": "Key",
+    "description": "A small item used to unlock doors or containers.",
+    "key": 55,
+    "iconPath": "Assets/Icons/Inventory/key.png"
+  },
+  {
+    "id": "keycard",
+    "name": "Keycard",
+    "description": "An access card for locked areas.",
+    "key": 56,
+    "iconPath": "Assets/Icons/Inventory/keycard.png"
+  },
+  {
+    "id": "lockpick",
+    "name": "Lockpick",
+    "description": "A small tool used to open locked objects.",
+    "key": 57,
+    "iconPath": "Assets/Icons/Inventory/lockpick.png"
+  },
+  {
+    "id": "id_badge",
+    "name": "ID Badge",
+    "description": "An identification card for restricted access.",
+    "key": 58,
+    "iconPath": "Assets/Icons/Inventory/id_badge.png"
+  },
+  {
+    "id": "safe_code",
+    "name": "Safe Code",
+    "description": "A code used to open a secure container.",
+    "key": 59,
+    "iconPath": "Assets/Icons/Inventory/safe_code.png"
+  },
+  {
+    "id": "coin",
+    "name": "Coin",
+    "description": "A small currency item.",
+    "key": 60,
+    "iconPath": "Assets/Icons/Inventory/coin.png"
+  },
+  {
+    "id": "cash",
+    "name": "Cash",
+    "description": "Paper money used for trading.",
+    "key": 61,
+    "iconPath": "Assets/Icons/Inventory/cash.png"
+  },
+  {
+    "id": "gold_bar",
+    "name": "Gold Bar",
+    "description": "A valuable trade item.",
+    "key": 62,
+    "iconPath": "Assets/Icons/Inventory/gold_bar.png"
+  },
+  {
+    "id": "gem",
+    "name": "Gem",
+    "description": "A rare valuable stone.",
+    "key": 63,
+    "iconPath": "Assets/Icons/Inventory/gem.png"
+  },
+  {
+    "id": "wallet",
+    "name": "Wallet",
+    "description": "A small container for money and cards.",
+    "key": 64,
+    "iconPath": "Assets/Icons/Inventory/wallet.png"
+  },
+  {
+    "id": "wood",
+    "name": "Wood",
+    "description": "A basic crafting material.",
+    "key": 65,
+    "iconPath": "Assets/Icons/Inventory/wood.png"
+  },
+  {
+    "id": "stone",
+    "name": "Stone",
+    "description": "A common raw material.",
+    "key": 66,
+    "iconPath": "Assets/Icons/Inventory/stone.png"
+  },
+  {
+    "id": "metal_scrap",
+    "name": "Metal Scrap",
+    "description": "A recyclable crafting material.",
+    "key": 67,
+    "iconPath": "Assets/Icons/Inventory/metal_scrap.png"
+  },
+  {
+    "id": "cloth",
+    "name": "Cloth",
+    "description": "A soft material used for crafting.",
+    "key": 68,
+    "iconPath": "Assets/Icons/Inventory/cloth.png"
+  },
+  {
+    "id": "leather",
+    "name": "Leather",
+    "description": "A durable material used for gear.",
+    "key": 69,
+    "iconPath": "Assets/Icons/Inventory/leather.png"
+  },
+  {
+    "id": "plastic",
+    "name": "Plastic",
+    "description": "A lightweight crafting material.",
+    "key": 70,
+    "iconPath": "Assets/Icons/Inventory/plastic.png"
+  },
+  {
+    "id": "wire",
+    "name": "Wire",
+    "description": "An electrical crafting component.",
+    "key": 71,
+    "iconPath": "Assets/Icons/Inventory/wire.png"
+  },
+  {
+    "id": "circuit_board",
+    "name": "Circuit Board",
+    "description": "An electronic component used in devices.",
+    "key": 72,
+    "iconPath": "Assets/Icons/Inventory/circuit_board.png"
+  },
+  {
+    "id": "gear",
+    "name": "Gear",
+    "description": "A mechanical component used in machinery.",
+    "key": 73,
+    "iconPath": "Assets/Icons/Inventory/gear.png"
+  },
+  {
+    "id": "fuel_can",
+    "name": "Fuel Can",
+    "description": "A container of fuel for vehicles or machines.",
+    "key": 74,
+    "iconPath": "Assets/Icons/Inventory/fuel_can.png"
+  },
+  {
+    "id": "torch",
+    "name": "Torch",
+    "description": "A simple flame-based light source.",
+    "key": 75,
+    "iconPath": "Assets/Icons/Inventory/torch.png"
+  },
+  {
+    "id": "lantern",
+    "name": "Lantern",
+    "description": "A portable lamp for lighting an area.",
+    "key": 76,
+    "iconPath": "Assets/Icons/Inventory/lantern.png"
+  },
+  {
+    "id": "matches",
+    "name": "Matches",
+    "description": "Small fire-starting sticks.",
+    "key": 77,
+    "iconPath": "Assets/Icons/Inventory/matches.png"
+  },
+  {
+    "id": "lighter",
+    "name": "Lighter",
+    "description": "A compact item used to start fires.",
+    "key": 78,
+    "iconPath": "Assets/Icons/Inventory/lighter.png"
+  },
+  {
+    "id": "campfire_kit",
+    "name": "Campfire Kit",
+    "description": "A kit used to create a temporary campfire.",
+    "key": 79,
+    "iconPath": "Assets/Icons/Inventory/campfire_kit.png"
+  },
+  {
+    "id": "tent",
+    "name": "Tent",
+    "description": "A portable shelter for resting outdoors.",
+    "key": 80,
+    "iconPath": "Assets/Icons/Inventory/tent.png"
+  },
+  {
+    "id": "sleeping_bag",
+    "name": "Sleeping Bag",
+    "description": "A warm item used for sleeping outdoors.",
+    "key": 81,
+    "iconPath": "Assets/Icons/Inventory/sleeping_bag.png"
+  },
+  {
+    "id": "backpack",
+    "name": "Backpack",
+    "description": "A storage item that increases carrying capacity.",
+    "key": 82,
+    "iconPath": "Assets/Icons/Inventory/backpack.png"
+  },
+  {
+    "id": "crate",
+    "name": "Crate",
+    "description": "A wooden container for storing items.",
+    "key": 83,
+    "iconPath": "Assets/Icons/Inventory/crate.png"
+  },
+  {
+    "id": "barrel",
+    "name": "Barrel",
+    "description": "A large container for liquids or supplies.",
+    "key": 84,
+    "iconPath": "Assets/Icons/Inventory/barrel.png"
+  },
+  {
+    "id": "bag",
+    "name": "Bag",
+    "description": "A simple container for carrying objects.",
+    "key": 85,
+    "iconPath": "Assets/Icons/Inventory/bag.png"
+  },
+  {
+    "id": "pouch",
+    "name": "Pouch",
+    "description": "A small container for lightweight items.",
+    "key": 86,
+    "iconPath": "Assets/Icons/Inventory/pouch.png"
+  },
+  {
+    "id": "phone",
+    "name": "Phone",
+    "description": "A mobile communication device.",
+    "key": 87,
+    "iconPath": "Assets/Icons/Inventory/phone.png"
+  },
+  {
+    "id": "tablet",
+    "name": "Tablet",
+    "description": "A portable touchscreen device.",
+    "key": 88,
+    "iconPath": "Assets/Icons/Inventory/tablet.png"
+  },
+  {
+    "id": "laptop",
+    "name": "Laptop",
+    "description": "A portable computer.",
+    "key": 89,
+    "iconPath": "Assets/Icons/Inventory/laptop.png"
+  },
+  {
+    "id": "camera",
+    "name": "Camera",
+    "description": "A device used to take photos.",
+    "key": 90,
+    "iconPath": "Assets/Icons/Inventory/camera.png"
+  },
+  {
+    "id": "drone",
+    "name": "Drone",
+    "description": "A remote-controlled flying device.",
+    "key": 91,
+    "iconPath": "Assets/Icons/Inventory/drone.png"
+  },
+  {
+    "id": "usb_drive",
+    "name": "USB Drive",
+    "description": "A small digital storage device.",
+    "key": 92,
+    "iconPath": "Assets/Icons/Inventory/usb_drive.png"
+  },
+  {
+    "id": "hard_drive",
+    "name": "Hard Drive",
+    "description": "A storage device containing digital data.",
+    "key": 93,
+    "iconPath": "Assets/Icons/Inventory/hard_drive.png"
+  },
+  {
+    "id": "flare",
+    "name": "Flare",
+    "description": "A bright signal item used for visibility.",
+    "key": 94,
+    "iconPath": "Assets/Icons/Inventory/flare.png"
+  },
+  {
+    "id": "signal_beacon",
+    "name": "Signal Beacon",
+    "description": "A device used to broadcast a location signal.",
+    "key": 95,
+    "iconPath": "Assets/Icons/Inventory/signal_beacon.png"
+  },
+  {
+    "id": "fire_extinguisher",
+    "name": "Fire Extinguisher",
+    "description": "A safety item used to put out fires.",
+    "key": 96,
+    "iconPath": "Assets/Icons/Inventory/fire_extinguisher.png"
+  },
+  {
+    "id": "crowbar",
+    "name": "Crowbar",
+    "description": "A metal tool used for prying open objects.",
+    "key": 97,
+    "iconPath": "Assets/Icons/Inventory/crowbar.png"
+  },
+  {
+    "id": "chain",
+    "name": "Chain",
+    "description": "A metal chain used for securing or pulling objects.",
+    "key": 98,
+    "iconPath": "Assets/Icons/Inventory/chain.png"
+  },
+  {
+    "id": "duct_tape",
+    "name": "Duct Tape",
+    "description": "A useful adhesive tape for quick repairs.",
+    "key": 99,
+    "iconPath": "Assets/Icons/Inventory/duct_tape.png"
+  },
+  {
+    "id": "bike",
+    "name": "Bike",
+    "description": "A lightweight vehicle for fast travel.",
+    "key": 100,
+    "iconPath": "Assets/Icons/Inventory/bike.png"
+  },
+  {
+    "id": "car_key",
+    "name": "Car Key",
+    "description": "A key used to unlock or start a vehicle.",
+    "key": 101,
+    "iconPath": "Assets/Icons/Inventory/car_key.png"
+  },
+  {
+    "id": "tire",
+    "name": "Tire",
+    "description": "A vehicle wheel component.",
+    "key": 102,
+    "iconPath": "Assets/Icons/Inventory/tire.png"
+  },
+  {
+    "id": "engine_part",
+    "name": "Engine Part",
+    "description": "A mechanical part used to repair engines.",
+    "key": 103,
+    "iconPath": "Assets/Icons/Inventory/engine_part.png"
+  },
+  {
+    "id": "oil_can",
+    "name": "Oil Can",
+    "description": "A container of oil for machinery maintenance.",
+    "key": 104,
+    "iconPath": "Assets/Icons/Inventory/oil_can.png"
+  },
+  {
+    "id": "book",
+    "name": "Book",
+    "description": "A readable item containing information.",
+    "key": 105,
+    "iconPath": "Assets/Icons/Inventory/book.png"
+  },
+  {
+    "id": "blueprint",
+    "name": "Blueprint",
+    "description": "A plan used to craft or build something.",
+    "key": 106,
+    "iconPath": "Assets/Icons/Inventory/blueprint.png"
+  },
+  {
+    "id": "recipe",
+    "name": "Recipe",
+    "description": "A document explaining how to create an item.",
+    "key": 107,
+    "iconPath": "Assets/Icons/Inventory/recipe.png"
+  },
+  {
+    "id": "mysterious_note",
+    "name": "Mysterious Note",
+    "description": "A note containing unclear or hidden information.",
+    "key": 108,
+    "iconPath": "Assets/Icons/Inventory/mysterious_note.png"
+  },
+  {
+    "id": "ancient_relic",
+    "name": "Ancient Relic",
+    "description": "A rare artifact from the past.",
+    "key": 109,
+    "iconPath": "Assets/Icons/Inventory/ancient_relic.png"
+  },
+  {
+    "id": "crystal",
+    "name": "Crystal",
+    "description": "A strange glowing object with unknown properties.",
+    "key": 110,
+    "iconPath": "Assets/Icons/Inventory/crystal.png"
+  },
+  {
+    "id": "energy_core",
+    "name": "Energy Core",
+    "description": "A powerful energy source for advanced devices.",
+    "key": 111,
+    "iconPath": "Assets/Icons/Inventory/energy_core.png"
+  },
+  {
+    "id": "power_cell",
+    "name": "Power Cell",
+    "description": "A high-capacity battery for machinery.",
+    "key": 112,
+    "iconPath": "Assets/Icons/Inventory/power_cell.png"
+  },
+  {
+    "id": "scanner",
+    "name": "Scanner",
+    "description": "A device used to detect nearby objects or signals.",
+    "key": 113,
+    "iconPath": "Assets/Icons/Inventory/scanner.png"
+  },
+  {
+    "id": "access_chip",
+    "name": "Access Chip",
+    "description": "A small electronic chip used for secure access.",
+    "key": 114,
+    "iconPath": "Assets/Icons/Inventory/access_chip.png"
+  }
+]
