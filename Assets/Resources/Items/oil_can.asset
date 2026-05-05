@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e063770bc80c84a9965d7fbfc4a93a, type: 3}
+  m_Name: oil_can
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryScriptableData
+  key: 104
+  name: Oil Can
+  description: A container of oil for machinery maintenance.
+  icon: {fileID: 21300000, guid: b7423cc666b528e49b78b75f07d3f29f, type: 3}

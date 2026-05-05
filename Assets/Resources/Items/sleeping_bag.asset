@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35e063770bc80c84a9965d7fbfc4a93a, type: 3}
+  m_Name: sleeping_bag
+  m_EditorClassIdentifier: Assembly-CSharp::InventoryScriptableData
+  key: 81
+  name: Sleeping Bag
+  description: A warm item used for sleeping outdoors.
+  icon: {fileID: 21300000, guid: d718c09a20b378a42b8f58078a8c46da, type: 3}
