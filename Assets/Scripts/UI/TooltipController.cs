@@ -1,0 +1,76 @@
+using UnityEngine;
+using UnityEngine.UIElements;
+
+public class TooltipController : MonoBehaviour
+{
+    [SerializeField] private UIDocument uiDoc;
+    [SerializeField] private Vector3 offset = new Vector3(20f, 50f, 0f);
+
+    private VisualElement root;
+    private VisualElement tooltip;
+    private Label tooltipNameLabel;
+    private Label tooltipDescriptionLabel;
+
+    void Awake()
+    {
+        root = uiDoc.rootVisualElement;
+        tooltip = root.Q(className: "tooltip");
+        tooltipNameLabel = root.Q<Label>(className: "tooltip-name");
+        tooltipDescriptionLabel = root.Q<Label>(className: "tooltip-description");
+    }
+
+    void OnEnable()
+    {
+        root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+        root.RegisterCallback<PointerLeaveEvent>(OnPointerLeave);
+    }
+
+    void OnDisable()
+    {
+        root.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+        root.UnregisterCallback<PointerLeaveEvent>(OnPointerLeave);
+    }
+
+    private void OnPointerMove(PointerMoveEvent evt)
+    {
+        if (evt.target is not VisualElement item)
+        {
+            HideTooltip();
+            return;
+        }
+
+        var data = item.userData as InventoryScriptableData;
+
+        if (data == null)
+        {
+            HideTooltip();
+            return;
+        }
+
+        ShowTooltip(data, evt.position + offset);
+
+    }
+
+    private void ShowTooltip(InventoryScriptableData data, Vector3 position)
+    {
+        tooltipNameLabel.text = data.name;
+        tooltipDescriptionLabel.text = data.description;
+        tooltip.style.left = position.x;
+        tooltip.style.top = position.y;
+        tooltip.AddToClassList("tooltip-active");
+    }
+
+    private void HideTooltip()
+    {
+        tooltipNameLabel.text = string.Empty;
+        tooltipDescriptionLabel.text = string.Empty;
+        tooltip.RemoveFromClassList("tooltip-active");
+    }
+
+    private void OnPointerLeave(PointerLeaveEvent evt)
+    {
+        HideTooltip();
+    }
+
+
+}

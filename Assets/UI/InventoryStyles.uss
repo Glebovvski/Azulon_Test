@@ -49,7 +49,73 @@
     margin-left: 5px;
 }
 
-.slot .slot-active
-{
+.slot .slot-active {
     border-color: rgb(199, 94, 9);
+}
+
+.slot-image {
+    align-content: stretch;
+    align-self: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    background-color: rgba(47, 12, 12, 0);
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.slot-amount {
+    color: rgb(255, 255, 255);
+    font-size: 31px;
+    -unity-text-align: middle-right;
+    -unity-font-style: bold;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    white-space: normal;
+    -unity-text-outline-color: rgb(3, 0, 0);
+    -unity-text-outline-width: 5px;
+    font-size: 45px;
+}
+
+.item {
+    align-content: stretch;
+    align-self: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.tooltip {
+    position: absolute;
+    display: flex;
+    border-left-color: rgb(18, 85, 122);
+    border-right-color: rgb(18, 85, 122);
+    border-top-color: rgb(18, 85, 122);
+    border-bottom-color: rgb(18, 85, 122);
+    border-top-width: 6px;
+    border-right-width: 6px;
+    border-bottom-width: 6px;
+    border-left-width: 6px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    opacity: 0;
+    background-color: rgba(112, 177, 201, 0.85);
+}
+
+.tooltip-active {
+    opacity: 1;
+    transition-property: opacity;
+    transition-duration: 500ms;
 }
