@@ -74,7 +74,7 @@ public class InventoryManipulator : PointerManipulator
         target.BringToFront();
 
         target.CapturePointer(evt.pointerId);
-        evt.StopPropagation();
+        // evt.StopPropagation();
     }
 
     private void ResolvePosition(Vector2 position)
