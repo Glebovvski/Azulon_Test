@@ -10,9 +10,9 @@ public class WorldUIManager : UIManager
             for (int j = 0; j < item.amount; j++)
             {
                 var slot = CreateSlot();
-                var inventoryItem = CreateItem(item.data);
+                var inventoryItem = CreateItem(item);
                 slot.Add(inventoryItem);
-                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, dragPanel, null));
+                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, dragPanel, OnDrop));
                 panel.Add(slot);
                 inventoryUIData.Add(new InventoryUIData(item, slot, false, inventoryUIData.Count));
             }

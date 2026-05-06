@@ -128,7 +128,7 @@ public class InventoryManipulator : PointerManipulator
             replaceDataInSlot = null;
         }
         isDragging = false;
-        OnDrop?.Invoke(target, closestSlot);
+        
     }
 
     private void SnapToSlot(VisualElement slot, VisualElement overrideTarget = null)
@@ -144,6 +144,7 @@ public class InventoryManipulator : PointerManipulator
         item.style.top = StyleKeyword.Auto;
         item.style.translate = new Translate(0, 0, 0);
         item.style.translate = Vector3.zero;
+        OnDrop?.Invoke(target, slot);
     }
 
 

@@ -19,12 +19,13 @@ public class InventoryUIManager : UIManager
             if (i < dataList.List.Count)
             {
                 var inventoryItem = CreateItem(dataList.List[i]);
-                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, dragPanel, null));
+                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, dragPanel, OnDrop));
                 slots[i].Add(inventoryItem);
             }
             else
                 break;
         }
     }
+
 
 }

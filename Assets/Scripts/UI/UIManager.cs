@@ -1,5 +1,6 @@
-using System;
 using System.Collections.Generic;
+using Unity.Properties;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,7 +20,7 @@ public abstract class UIManager : MonoBehaviour
     {
         inventoryUIData = new();
         root = uiDoc.rootVisualElement;
-        dragPanel = root.Q(className:"drag-layer");
+        dragPanel = root.Q(className: "drag-layer");
         FillInventory();
     }
 
@@ -33,30 +34,6 @@ public abstract class UIManager : MonoBehaviour
         slot.name = "slot";
 
         return slot;
-    }
-
-    protected VisualElement CreateItem(InventoryScriptableData item)
-    {
-        VisualElement itemEl = new VisualElement();
-        itemEl.AddToClassList("item");
-        itemEl.name = "item";
-
-        Image image = new Image();
-        image.AddToClassList("slot-image");
-        image.pickingMode = PickingMode.Ignore;
-
-        Label amount = new Label();
-        amount.AddToClassList("slot-amount");
-        amount.pickingMode = PickingMode.Ignore;
-
-        image.Add(amount);
-        itemEl.Add(image);
-
-        amount.text = $"{DefaultAmountOfItemsInSlot}";
-        image.sprite = item.icon;
-
-        itemEl.userData = item;
-        return itemEl;
     }
 
 
@@ -74,13 +51,38 @@ public abstract class UIManager : MonoBehaviour
         amount.AddToClassList("slot-amount");
         amount.pickingMode = PickingMode.Ignore;
 
+        itemEl.name = item.data.name;
+
         image.Add(amount);
         itemEl.Add(image);
 
-        amount.text = $"{item.amount}";
-        image.sprite = item.data.icon;
+        itemEl.dataSource = item;
 
-        itemEl.userData = item.data;
+        image.SetBinding("sprite", new DataBinding
+        {
+            dataSourcePath = new PropertyPath("data.icon")
+        });
+
+        amount.SetBinding("text", new DataBinding
+        {
+            dataSourcePath = new PropertyPath("amount")
+        });
+
+        // amount.text = $"{item.amount}";
+        // image.sprite = item.data.icon;
+
+        // itemEl.userData = item.data;
+        // itemEl.dataSource = item.data;
         return itemEl;
+    }
+
+
+    protected void OnDrop(VisualElement data, VisualElement newSlot)
+    {
+        if (data == null || newSlot == null)
+        {
+            Debug.LogError($"Something went wrong on drag {data.userData} {newSlot}");
+            return;
+        }
     }
 }
