@@ -12,18 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 213a3ddeaeb335349808ec3ddd1145a3, type: 3}
   m_Name: Inventory Item List
   m_EditorClassIdentifier: Assembly-CSharp::InventoryListScriptableData
-  List:
-  - <Data>k__BackingField: {fileID: 11400000, guid: d0f310b46e76ad94bb20bd7a84675cb2, type: 2}
-    <Amount>k__BackingField: 6
-  - <Data>k__BackingField: {fileID: 11400000, guid: 0fb857a7c87736747b977c9d06d33c4d, type: 2}
-    <Amount>k__BackingField: 2
-  - <Data>k__BackingField: {fileID: 11400000, guid: 190a4d329cc5d774f99fe5120e9702af, type: 2}
-    <Amount>k__BackingField: 6
-  - <Data>k__BackingField: {fileID: 11400000, guid: 142820ccccb7f1c4fb9d0fd3c1673641, type: 2}
-    <Amount>k__BackingField: 2
-  - <Data>k__BackingField: {fileID: 11400000, guid: 271e48d52c450e04ab7efe2a638a9a95, type: 2}
-    <Amount>k__BackingField: 1
-  - <Data>k__BackingField: {fileID: 11400000, guid: 0ed5bf30af549c94296cbebf6bea3463, type: 2}
-    <Amount>k__BackingField: 2
-  - <Data>k__BackingField: {fileID: 11400000, guid: a920cf1fc8de1894b9dc1e7f43606dff, type: 2}
-    <Amount>k__BackingField: 4
+  List: []

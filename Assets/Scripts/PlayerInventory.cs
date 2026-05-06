@@ -1,10 +1,20 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour
+public interface IPlayerInventory
+{
+    Dictionary<int, int> Inventory { get; }
+    InventoryScriptableData GetItem(int key);
+    InventoryScriptableData GetItem(string name);
+    void HandleItemDropped(InventoryDropContext context);
+}
+
+public class PlayerInventory : MonoBehaviour, IPlayerInventory
 {
     [SerializeField] private UIManager uiManager;
     [SerializeField] private InventoryListScriptableData startingInventory;
+    [SerializeField] private InventoryListScriptableData ItemsDB;
     public Dictionary<int, int> Inventory { get; private set; }
 
     void Awake()
@@ -16,6 +26,25 @@ public class PlayerInventory : MonoBehaviour
     private void OnEnable()
     {
         InventoryEvents.OnItemDropped += HandleItemDropped;
+    }
+
+    public InventoryScriptableData GetItem(int key)
+    {
+        if (Inventory.ContainsKey(key))
+        {
+            var item = ItemsDB.List.FirstOrDefault(x => x.Data.key == key);
+            return item.Data;
+        }
+        return null;
+    }
+
+    public InventoryScriptableData GetItem(string name)
+    {
+        int key = -1;
+        key = ItemsDB.List.FirstOrDefault(x => x.Data.name.Contains(name)).Data.key;
+        if (key < 0)
+            return null;
+        return GetItem(key);
     }
 
     private void PopulateInventoryWithStartingData()
@@ -33,7 +62,7 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    private void HandleItemDropped(InventoryDropContext context)
+    public void HandleItemDropped(InventoryDropContext context)
     {
         if (context.Item == null)
             return;

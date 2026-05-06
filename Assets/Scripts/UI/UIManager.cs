@@ -9,7 +9,7 @@ public abstract class UIManager : MonoBehaviour
 {
     protected const string INVENTORY_GRID_CLASS = "inventory";
     protected const string WORLD_GRID_CLASS = "world";
-
+    private readonly string DefaultAmount = "1";
     [SerializeField] protected InventoryListScriptableData dataList;
     [SerializeField] protected UIDocument uiDoc;
     [SerializeField] protected List<InventoryUIData> inventoryUIData;
@@ -40,7 +40,6 @@ public abstract class UIManager : MonoBehaviour
 
         return slot;
     }
-
 
     protected VisualElement CreateItem(IInventoryData item)
     {
@@ -97,6 +96,8 @@ public abstract class UIManager : MonoBehaviour
 
         InventoryDropContext context = new InventoryDropContext(inventoryData, data, oldSlot, newSlot, from, to);
         InventoryEvents.OnDrop(context);
+        if (to == InventoryArea.PlayerInventory)
+            Match3(data, newSlot);
     }
 
     private InventoryArea GetInventoryArea(VisualElement slot)
@@ -113,5 +114,64 @@ public abstract class UIManager : MonoBehaviour
             return InventoryArea.PlayerInventory;
 
         return InventoryArea.None;
+    }
+
+    private void Match3(VisualElement item, VisualElement newSlot, int matchAmount = 3)
+    {
+        VisualElement inventory = root.Q(className:INVENTORY_GRID_CLASS);
+        IInventoryData data = item.dataSource as IInventoryData;
+        int key = data.Data.key;
+        bool matching = false;
+        List<VisualElement> match = new();
+        var slots = inventory.Query(className: "slot").ToList();
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            var itemInSlot = slots[i].Q("item");
+            if (itemInSlot == null)
+            {
+                matching = false;
+                if (match.Count < matchAmount)
+                {
+                    match.Clear();
+                }
+                continue;
+            }
+            var itemData = itemInSlot.dataSource as IInventoryData;
+            if (itemData.Data.key == key)
+            {
+                match.Add(itemInSlot);
+                matching = true;
+            }
+            else
+            {
+                if (match.Count < matchAmount)
+                {
+                    match.Clear();
+                }
+                matching = false;
+            }
+        }
+
+        if (match.Count < matchAmount)
+            return;
+
+        int amount = (match[0].dataSource as IInventoryData).Amount;
+        for (int i = 1; i < match.Count; i++)
+        {
+            amount += (match[i].dataSource as IInventoryData).Amount;
+        }
+
+        var firstMatchedLabel = match[0].Q<Label>(className: "slot-amount");
+        if (firstMatchedLabel == null)
+            return;
+
+        firstMatchedLabel.text = amount.ToString();
+
+        for (int i = 1; i < match.Count; i++)
+        {
+            match[i].dataSource = null;
+            match[i].RemoveFromHierarchy();
+        }
     }
 }
