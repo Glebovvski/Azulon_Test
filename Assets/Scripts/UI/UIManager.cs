@@ -9,7 +9,6 @@ public abstract class UIManager : MonoBehaviour
 {
     protected const string INVENTORY_GRID_CLASS = "inventory";
     protected const string WORLD_GRID_CLASS = "world";
-    private const int DefaultAmountOfItemsInSlot = 1;
 
     [SerializeField] protected InventoryListScriptableData dataList;
     [SerializeField] protected UIDocument uiDoc;
@@ -78,32 +77,41 @@ public abstract class UIManager : MonoBehaviour
     }
 
 
-    protected void OnDrop(VisualElement data, VisualElement oldSlot, VisualElement newSlot)
+    protected virtual void OnDrop(VisualElement data, VisualElement oldSlot, VisualElement newSlot)
     {
         if (data == null || newSlot == null || oldSlot == null)
         {
-            Debug.LogError($"Something went wrong on drag {data.userData} {newSlot}");
+            Debug.LogError($"Something went wrong on drag {data.userData} {newSlot} {oldSlot}");
             return;
         }
 
-        bool fromWorld = oldSlot.parent.ClassListContains(WORLD_GRID_CLASS);
-        bool toInventory = newSlot.parent.ClassListContains(INVENTORY_GRID_CLASS);
+        IInventoryData inventoryData = data.dataSource as IInventoryData;
+        if (inventoryData == null)
+        {
+            Debug.LogError($"No InventoryData: {data.name}");
+            return;
+        }
 
-        if (toInventory)
-        {
-            if (fromWorld)
-            {
-                Debug.LogError($"Add item {data.name} from world to inventory");
-                OnAddToInventory?.Invoke(data.dataSource as IInventoryData);
-            }
-        }
-        if (!fromWorld)
-        {
-            if (!toInventory)
-            {
-                Debug.LogError($"Remove item {data.name} from inventory to world");
-                OnRemoveFromInventory?.Invoke(data.dataSource as IInventoryData);
-            }
-        }
+        InventoryArea from = GetInventoryArea(oldSlot);
+        InventoryArea to = GetInventoryArea(newSlot);
+
+        InventoryDropContext context = new InventoryDropContext(inventoryData, data, oldSlot, newSlot, from, to);
+        InventoryEvents.OnDrop(context);
+    }
+
+    private InventoryArea GetInventoryArea(VisualElement slot)
+    {
+        if (slot == null || slot.parent == null)
+            return InventoryArea.None;
+
+        VisualElement grid = slot.parent;
+
+        if (grid.ClassListContains(WORLD_GRID_CLASS))
+            return InventoryArea.World;
+
+        if (grid.ClassListContains(INVENTORY_GRID_CLASS))
+            return InventoryArea.PlayerInventory;
+
+        return InventoryArea.None;
     }
 }

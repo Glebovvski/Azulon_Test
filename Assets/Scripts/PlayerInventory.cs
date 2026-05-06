@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    [SerializeField] private UIManager uiManager;
     [SerializeField] private InventoryListScriptableData startingInventory;
     public Dictionary<int, int> Inventory { get; private set; }
 
@@ -12,13 +13,18 @@ public class PlayerInventory : MonoBehaviour
         PopulateInventoryWithStartingData();
     }
 
+    private void OnEnable()
+    {
+        InventoryEvents.OnItemDropped += HandleItemDropped;
+    }
+
     private void PopulateInventoryWithStartingData()
     {
         foreach (var data in startingInventory.List)
         {
             if (Inventory.ContainsKey(data.Data.key))
             {
-                AddToInventoty(data);
+                AddToInventory(data);
             }
             else
             {
@@ -27,15 +33,37 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void AddToInventoty(IInventoryData data)
+    private void HandleItemDropped(InventoryDropContext context)
+    {
+        if (context.Item == null)
+            return;
+
+        if (context.From == InventoryArea.World && context.To == InventoryArea.PlayerInventory)
+        {
+            AddToInventory(context.Item);
+            return;
+        }
+
+        if (context.From == InventoryArea.PlayerInventory && context.To == InventoryArea.World)
+        {
+            RemoveFromInventory(context.Item);
+            return;
+        }
+    }
+
+    private void AddToInventory(IInventoryData data)
     {
         if (Inventory.ContainsKey(data.Data.key))
         {
             Inventory[data.Data.key] += data.Amount;
         }
+        else
+        {
+            Inventory.Add(data.Data.key, data.Amount);
+        }
     }
 
-    public void RemoveFromInventory(IInventoryData data)
+    private void RemoveFromInventory(IInventoryData data)
     {
         if (!Inventory.ContainsKey(data.Data.key))
         {
@@ -48,5 +76,10 @@ public class PlayerInventory : MonoBehaviour
         {
             Inventory.Remove(data.Data.key);
         }
+    }
+
+    private void OnDisable()
+    {
+        InventoryEvents.OnItemDropped -= HandleItemDropped;
     }
 }
