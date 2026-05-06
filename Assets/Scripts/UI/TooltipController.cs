@@ -36,7 +36,7 @@ public class TooltipController : MonoBehaviour
 
     private void OnPointerMove(PointerMoveEvent evt)
     {
-        if (evt.target is not VisualElement item || evt.button == 0)
+        if (evt.target is not VisualElement item || evt.button > 0)
         {
             HideTooltip();
             return;

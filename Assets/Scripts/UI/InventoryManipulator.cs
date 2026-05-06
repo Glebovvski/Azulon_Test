@@ -15,10 +15,11 @@ public class InventoryManipulator : PointerManipulator
     private Action<VisualElement, VisualElement> OnDrop;
     private string slotContainerName = "grid";
 
-    public InventoryManipulator(VisualElement _taregt, VisualElement _parentSlot, VisualElement _mainParent, Action<VisualElement, VisualElement> _onDrop)
+    private VisualElement replaceDataInSlot;
+
+    public InventoryManipulator(VisualElement _taregt, VisualElement _mainParent, Action<VisualElement, VisualElement> _onDrop)
     {
         target = _taregt;
-        parentSlot = _parentSlot;
         mainParent = _mainParent;
         OnDrop = _onDrop;
     }
@@ -46,6 +47,7 @@ public class InventoryManipulator : PointerManipulator
         if (evt.button != 0)
             return;
 
+        parentSlot = target.parent;
         target.style.position = Position.Absolute;
         isDragging = true;
 
@@ -74,7 +76,6 @@ public class InventoryManipulator : PointerManipulator
         target.BringToFront();
 
         target.CapturePointer(evt.pointerId);
-        // evt.StopPropagation();
     }
 
     private void ResolvePosition(Vector2 position)
@@ -108,8 +109,6 @@ public class InventoryManipulator : PointerManipulator
         if (!isDragging || !target.HasPointerCapture(evt.pointerId))
             return;
 
-        // mainParent.Remove(target);
-        // parentSlot.Add(target);
         target.ReleasePointer(evt.pointerId);
         evt.StopPropagation();
     }
@@ -123,24 +122,32 @@ public class InventoryManipulator : PointerManipulator
         if (closestSlot == null)
             closestSlot = target.parent;
         SnapToSlot(closestSlot);
+        if (replaceDataInSlot != null)
+        {
+            SnapToSlot(parentSlot, replaceDataInSlot);
+            replaceDataInSlot = null;
+        }
         isDragging = false;
         OnDrop?.Invoke(target, closestSlot);
     }
 
-    private void SnapToSlot(VisualElement slot)
+    private void SnapToSlot(VisualElement slot, VisualElement overrideTarget = null)
     {
-        target.RemoveFromHierarchy();
-        slot.Add(target);
+        VisualElement item = target;
+        if (overrideTarget != null)
+            item = overrideTarget;
+        item.RemoveFromHierarchy();
+        slot.Add(item);
 
-        target.style.position = Position.Relative;
-        target.style.left = StyleKeyword.Auto;
-        target.style.top = StyleKeyword.Auto;
-        target.style.translate = new Translate(0, 0, 0);
-        target.style.translate = Vector3.zero;
+        item.style.position = Position.Relative;
+        item.style.left = StyleKeyword.Auto;
+        item.style.top = StyleKeyword.Auto;
+        item.style.translate = new Translate(0, 0, 0);
+        item.style.translate = Vector3.zero;
     }
 
 
-    private VisualElement FindClosestSlot(bool overlap)
+    private VisualElement FindClosestSlot(bool overlap, bool canReplace = true)
     {
         if (target.panel == null)
             return null;
@@ -169,11 +176,29 @@ public class InventoryManipulator : PointerManipulator
 
             if (distance < minDistance)
             {
-                minDistance = distance;
-                closestSlot = slot;
+                if (IsSlotEmpty(slot, out VisualElement itemInSlot))
+                {
+                    minDistance = distance;
+                    closestSlot = slot;
+                }
+                else
+                {
+                    if (!canReplace)
+                        continue;
+
+                    replaceDataInSlot = itemInSlot;
+                    minDistance = distance;
+                    closestSlot = slot;
+                }
             }
         }
 
         return closestSlot;
+    }
+
+    private bool IsSlotEmpty(VisualElement slot, out VisualElement item)
+    {
+        item = slot.Q(className: "item");
+        return item == null;
     }
 }
