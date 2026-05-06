@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Properties;
 using UnityEditor.UIElements;
@@ -6,6 +7,8 @@ using UnityEngine.UIElements;
 
 public abstract class UIManager : MonoBehaviour
 {
+    protected const string INVENTORY_GRID_CLASS = "inventory";
+    protected const string WORLD_GRID_CLASS = "world";
     private const int DefaultAmountOfItemsInSlot = 1;
 
     [SerializeField] protected InventoryListScriptableData dataList;
@@ -14,6 +17,9 @@ public abstract class UIManager : MonoBehaviour
     protected VisualElement root;
     protected VisualElement panel;
     protected VisualElement dragPanel;
+
+    public event Action<IInventoryData> OnAddToInventory;
+    public event Action<IInventoryData> OnRemoveFromInventory;
 
 
     void OnEnable()
@@ -37,7 +43,7 @@ public abstract class UIManager : MonoBehaviour
     }
 
 
-    protected VisualElement CreateItem(InventoryData item)
+    protected VisualElement CreateItem(IInventoryData item)
     {
         VisualElement itemEl = new VisualElement();
         itemEl.AddToClassList("item");
@@ -51,7 +57,7 @@ public abstract class UIManager : MonoBehaviour
         amount.AddToClassList("slot-amount");
         amount.pickingMode = PickingMode.Ignore;
 
-        itemEl.name = item.data.name;
+        itemEl.name = item.Data.name;
 
         image.Add(amount);
         itemEl.Add(image);
@@ -60,29 +66,44 @@ public abstract class UIManager : MonoBehaviour
 
         image.SetBinding("sprite", new DataBinding
         {
-            dataSourcePath = new PropertyPath("data.icon")
+            dataSourcePath = new PropertyPath("Data.icon")
         });
 
         amount.SetBinding("text", new DataBinding
         {
-            dataSourcePath = new PropertyPath("amount")
+            dataSourcePath = new PropertyPath("Amount")
         });
 
-        // amount.text = $"{item.amount}";
-        // image.sprite = item.data.icon;
-
-        // itemEl.userData = item.data;
-        // itemEl.dataSource = item.data;
         return itemEl;
     }
 
 
-    protected void OnDrop(VisualElement data, VisualElement newSlot)
+    protected void OnDrop(VisualElement data, VisualElement oldSlot, VisualElement newSlot)
     {
-        if (data == null || newSlot == null)
+        if (data == null || newSlot == null || oldSlot == null)
         {
             Debug.LogError($"Something went wrong on drag {data.userData} {newSlot}");
             return;
+        }
+
+        bool fromWorld = oldSlot.parent.ClassListContains(WORLD_GRID_CLASS);
+        bool toInventory = newSlot.parent.ClassListContains(INVENTORY_GRID_CLASS);
+
+        if (toInventory)
+        {
+            if (fromWorld)
+            {
+                Debug.LogError($"Add item {data.name} from world to inventory");
+                OnAddToInventory?.Invoke(data.dataSource as IInventoryData);
+            }
+        }
+        if (!fromWorld)
+        {
+            if (!toInventory)
+            {
+                Debug.LogError($"Remove item {data.name} from inventory to world");
+                OnRemoveFromInventory?.Invoke(data.dataSource as IInventoryData);
+            }
         }
     }
 }

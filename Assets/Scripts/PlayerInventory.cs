@@ -16,37 +16,37 @@ public class PlayerInventory : MonoBehaviour
     {
         foreach (var data in startingInventory.List)
         {
-            if (Inventory.ContainsKey(data.data.key))
+            if (Inventory.ContainsKey(data.Data.key))
             {
                 AddToInventoty(data);
             }
             else
             {
-                Inventory.Add(data.data.key, data.amount);
+                Inventory.Add(data.Data.key, data.Amount);
             }
         }
     }
 
-    public void AddToInventoty(InventoryData data)
+    public void AddToInventoty(IInventoryData data)
     {
-        if (Inventory.ContainsKey(data.data.key))
+        if (Inventory.ContainsKey(data.Data.key))
         {
-            Inventory[data.data.key] += data.amount;
+            Inventory[data.Data.key] += data.Amount;
         }
     }
 
-    public void RemoveFromInventory(InventoryData data)
+    public void RemoveFromInventory(IInventoryData data)
     {
-        if (!Inventory.ContainsKey(data.data.key))
+        if (!Inventory.ContainsKey(data.Data.key))
         {
-            Debug.LogError($"Inventory doesn't contain data with key {data.data.key} {data.data.name}");
+            Debug.LogError($"Inventory doesn't contain data with key {data.Data.key} {data.Data.name}");
             return;
         }
 
-        Inventory[data.data.key] -= data.amount;
-        if (Inventory[data.data.key] == 0)
+        Inventory[data.Data.key] -= data.Amount;
+        if (Inventory[data.Data.key] == 0)
         {
-            Inventory.Remove(data.data.key);
+            Inventory.Remove(data.Data.key);
         }
     }
 }

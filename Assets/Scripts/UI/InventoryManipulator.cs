@@ -12,12 +12,12 @@ public class InventoryManipulator : PointerManipulator
     private VisualElement mainParent;
     private Vector2 startPosPointer;
     private Vector2 startPosElement;
-    private Action<VisualElement, VisualElement> OnDrop;
+    private Action<VisualElement, VisualElement, VisualElement> OnDrop;
     private string slotContainerName = "grid";
 
     private VisualElement replaceDataInSlot;
 
-    public InventoryManipulator(VisualElement _taregt, VisualElement _mainParent, Action<VisualElement, VisualElement> _onDrop)
+    public InventoryManipulator(VisualElement _taregt, VisualElement _mainParent, Action<VisualElement, VisualElement, VisualElement> _onDrop)
     {
         target = _taregt;
         mainParent = _mainParent;
@@ -128,14 +128,18 @@ public class InventoryManipulator : PointerManipulator
             replaceDataInSlot = null;
         }
         isDragging = false;
-        
+
     }
 
     private void SnapToSlot(VisualElement slot, VisualElement overrideTarget = null)
     {
         VisualElement item = target;
+        VisualElement overrideTargetParentSlot=null;
         if (overrideTarget != null)
+        {
             item = overrideTarget;
+            overrideTargetParentSlot = overrideTarget.parent;
+        }
         item.RemoveFromHierarchy();
         slot.Add(item);
 
@@ -144,7 +148,12 @@ public class InventoryManipulator : PointerManipulator
         item.style.top = StyleKeyword.Auto;
         item.style.translate = new Translate(0, 0, 0);
         item.style.translate = Vector3.zero;
-        OnDrop?.Invoke(target, slot);
+        if (overrideTarget != null)
+        {
+            OnDrop?.Invoke(overrideTarget, overrideTargetParentSlot, parentSlot);
+        }
+        else
+            OnDrop?.Invoke(target, parentSlot, slot);
     }
 
 

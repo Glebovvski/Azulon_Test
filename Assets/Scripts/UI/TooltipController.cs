@@ -36,13 +36,12 @@ public class TooltipController : MonoBehaviour
 
     private void OnPointerMove(PointerMoveEvent evt)
     {
-        Debug.LogError("TOOLTIP move");
         if (evt.target is not VisualElement item)
         {
             HideTooltip();
             return;
         }
-        var data = item.dataSource as InventoryData;
+        var data = item.dataSource as IInventoryData;
 
         if (data == null)
         {
@@ -54,10 +53,10 @@ public class TooltipController : MonoBehaviour
 
     }
 
-    private void ShowTooltip(InventoryData data, Vector3 position)
+    private void ShowTooltip(IInventoryData data, Vector3 position)
     {
-        tooltipNameLabel.text = data.data.name;
-        tooltipDescriptionLabel.text = data.data.description;
+        tooltipNameLabel.text = data.Data.name;
+        tooltipDescriptionLabel.text = data.Data.description;
         tooltip.style.left = position.x;
         tooltip.style.top = position.y;
         tooltip.AddToClassList("tooltip-active");

@@ -4,10 +4,10 @@ public class WorldUIManager : UIManager
 {
     protected override void FillInventory()
     {
-        panel = root.Q(className: "world");
+        panel = root.Q(className: WORLD_GRID_CLASS);
         foreach (var item in dataList.List)
         {
-            for (int j = 0; j < item.amount; j++)
+            for (int j = 0; j < item.Amount; j++)
             {
                 var slot = CreateSlot();
                 var inventoryItem = CreateItem(item);

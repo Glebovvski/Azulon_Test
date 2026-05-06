@@ -11,10 +11,22 @@ public class InventoryListScriptableData : ScriptableObject
 }
 
 [Serializable]
-public class InventoryData
+public class InventoryData : IInventoryData
 {
     [CreateProperty]
-    public InventoryScriptableData data;
+    [field:SerializeField] public InventoryScriptableData Data { get; set; }
     [CreateProperty]
-    public int amount;
+    [field:SerializeField] public int Amount { get; set; }
+
+    // public InventoryData(InventoryScriptableData _data, int _amount)
+    // {
+    //     Data = _data;
+    //     Amount = _amount;        
+    // }
+}
+
+public interface IInventoryData
+{
+    public InventoryScriptableData Data { get; }
+    public int Amount { get; }
 }

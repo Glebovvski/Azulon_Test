@@ -7,7 +7,7 @@ public class InventoryUIManager : UIManager
 
     protected override void FillInventory()
     {
-        panel = root.Q(className: "inventory");
+        panel = root.Q(className: INVENTORY_GRID_CLASS);
         for (int i = 0; i < inventroySize; i++)
         {
             var slot = CreateSlot();
