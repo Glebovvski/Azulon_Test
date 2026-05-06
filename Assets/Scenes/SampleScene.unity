@@ -412,8 +412,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0df1ab7a922e6e34aa9f45d6e03794f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WorldUIManager
-  worldList: {fileID: 11400000, guid: 21f6334295f208b40a50a3fd1a95e2a8, type: 2}
+  dataList: {fileID: 11400000, guid: 21f6334295f208b40a50a3fd1a95e2a8, type: 2}
   uiDoc: {fileID: 1263629207}
+  inventoryUIData: []
 --- !u!4 &758026151
 Transform:
   m_ObjectHideFlags: 0
@@ -608,9 +609,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec234720d6649142a7d402900f011c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryUIManager
-  inventroySize: 64
-  defaultInventoryList: {fileID: 11400000, guid: 46ff287d93bcb5243b50ab6d970e366e, type: 2}
+  dataList: {fileID: 11400000, guid: 46ff287d93bcb5243b50ab6d970e366e, type: 2}
   uiDoc: {fileID: 1263629207}
+  inventoryUIData: []
+  inventroySize: 64
 --- !u!4 &1993419936
 Transform:
   m_ObjectHideFlags: 0

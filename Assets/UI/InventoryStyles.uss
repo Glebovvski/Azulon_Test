@@ -11,19 +11,11 @@
     align-items: center;
     align-self: center;
     flex-shrink: 0;
-     border-color: rgb(12, 65, 109);
-    /*border-top-width: 10px;
-    border-right-width: 10px;
-    border-bottom-width: 10px;
-    border-left-width: 10px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px; */
-     margin-top: 5px;
+    border-color: rgb(12, 65, 109);
+    margin-top: 5px;
     margin-right: 5px;
     margin-bottom: 5px;
-    margin-left: 5px; 
+    margin-left: 5px;
     flex-grow: 0;
     width: 100px;
     height: 100px;
@@ -31,20 +23,11 @@
     align-items: center;
     align-self: flex-start;
     flex-shrink: 0;
-    /* border-left-color: rgb(12, 65, 109);
-    border-right-color: rgb(12, 65, 109);
-    border-top-color: rgb(12, 65, 109);
-    border-bottom-color: rgb(12, 65, 109); */
-     
     border-width: 7px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
-    /* margin-top: 5px;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px; */
 }
 
 .slot .slot-active {
@@ -115,4 +98,13 @@
     opacity: 1;
     transition-property: opacity;
     transition-duration: 500ms;
+}
+
+.drag-layer {
+    flex-grow: 0;
+    background-color: rgb(255, 0, 0);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.23;
 }

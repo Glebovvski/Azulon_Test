@@ -1,35 +1,25 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InventoryUIManager : MonoBehaviour
+public class InventoryUIManager : UIManager
 {
     [SerializeField] private int inventroySize = 64;
-    [SerializeField] private InventoryListScriptableData defaultInventoryList;
-    [SerializeField] private UIDocument uiDoc;
-    private VisualElement root;
-    private VisualElement inventory;
 
-    void OnEnable()
+    protected override void FillInventory()
     {
-        root = uiDoc.rootVisualElement;
-        FillPlayerInventory();
-    }
-
-    private void FillPlayerInventory()
-    {
-        inventory = root.Q(className: "inventory");
+        panel = root.Q(className: "inventory");
         for (int i = 0; i < inventroySize; i++)
         {
             var slot = CreateSlot();
-            inventory.Add(slot);
+            panel.Add(slot);
         }
-        var slots = inventory.Query<VisualElement>(className: "slot").ToList();
+        var slots = panel.Query<VisualElement>(className: "slot").ToList();
         for (int i = 0; i < inventroySize; i++)
         {
-            if (i < defaultInventoryList.List.Count)
+            if (i < dataList.List.Count)
             {
-                var inventoryItem = CreateItem(defaultInventoryList.List[i]);
-                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, slots[i], inventory, null));
+                var inventoryItem = CreateItem(dataList.List[i]);
+                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, slots[i], dragPanel, null));
                 slots[i].Add(inventoryItem);
             }
             else
@@ -37,36 +27,4 @@ public class InventoryUIManager : MonoBehaviour
         }
     }
 
-    private VisualElement CreateSlot()
-    {
-        VisualElement slot = new VisualElement();
-        slot.pickingMode = PickingMode.Ignore;
-        slot.AddToClassList("slot");
-        slot.name = "slot";
-        return slot;
-    }
-
-    private VisualElement CreateItem(InventoryData item)
-    {
-        VisualElement itemEl = new VisualElement();
-        itemEl.AddToClassList("item");
-        itemEl.name = "item";
-
-        Image image = new Image();
-        image.AddToClassList("slot-image");
-        image.pickingMode = PickingMode.Ignore;
-
-        Label amount = new Label();
-        amount.AddToClassList("slot-amount");
-        amount.pickingMode = PickingMode.Ignore;
-
-        image.Add(amount);
-        itemEl.Add(image);
-
-        amount.text = $"{item.amount}";
-        image.sprite = item.data.icon;
-
-        itemEl.userData = item.data;
-        return itemEl;
-    }
 }
