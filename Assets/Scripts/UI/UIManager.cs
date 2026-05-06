@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,9 +11,12 @@ public abstract class UIManager : MonoBehaviour
     protected const string WORLD_GRID_CLASS = "world";
     [SerializeField] protected InventoryListScriptableData dataList;
     [SerializeField] protected UIDocument uiDoc;
+    [SerializeField] protected long delay = 200000;
     protected VisualElement root;
     protected VisualElement panel;
     protected VisualElement dragPanel;
+
+    private IVisualElementScheduledItem scheduler;
 
     public event Action<IInventoryData> OnAddToInventory;
     public event Action<IInventoryData> OnRemoveFromInventory;
@@ -239,12 +243,44 @@ public abstract class UIManager : MonoBehaviour
         if (firstMatchedLabel != null)
             firstMatchedLabel.text = totalAmount.ToString();
 
+        VisualElement[] itemsToDestroy = new VisualElement[match.Count - 1];
         for (int i = 1; i < match.Count; i++)
         {
-            match[i].dataSource = null;
-            match[i].RemoveFromHierarchy();
+            itemsToDestroy[i - 1] = match[i];
         }
+        ScheduleDisappear(itemsToDestroy);
+        ScheduleDestroy(itemsToDestroy);
 
         return true;
+    }
+
+    private void ScheduleDisappear(VisualElement[] items)
+    {
+        scheduler = root.schedule.Execute(() =>
+        {
+            foreach (var item in items)
+            {
+                item.AddToClassList("item-destroy");
+            }
+        }).StartingIn(10);
+    }
+
+    private void ScheduleDestroy(VisualElement[] items)
+    {
+        // CancelScheduled();
+        scheduler = root.schedule.Execute(() =>
+        {
+            foreach (var item in items)
+            {
+                item.dataSource = null;
+                item.RemoveFromHierarchy();
+            }
+        }).StartingIn(delay);
+    }
+
+    private void CancelScheduled()
+    {
+        scheduler?.Pause();
+        scheduler = null;
     }
 }

@@ -74,6 +74,15 @@
     flex-grow: 0;
     flex-shrink: 0;
     flex-wrap: wrap;
+
+    transition-property: scale;
+    transition-duration: 0.7s;
+    transition-timing-function: ease-in-back;
+}
+
+.item-destroy
+{
+    scale: 0%;
 }
 
 .tooltip {
@@ -109,3 +118,4 @@
     height: 100%;
     opacity: 0.23;
 }
+
