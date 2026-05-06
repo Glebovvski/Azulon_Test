@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Unity.Properties;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,10 +8,8 @@ public abstract class UIManager : MonoBehaviour
 {
     protected const string INVENTORY_GRID_CLASS = "inventory";
     protected const string WORLD_GRID_CLASS = "world";
-    private readonly string DefaultAmount = "1";
     [SerializeField] protected InventoryListScriptableData dataList;
     [SerializeField] protected UIDocument uiDoc;
-    [SerializeField] protected List<InventoryUIData> inventoryUIData;
     protected VisualElement root;
     protected VisualElement panel;
     protected VisualElement dragPanel;
@@ -20,10 +17,11 @@ public abstract class UIManager : MonoBehaviour
     public event Action<IInventoryData> OnAddToInventory;
     public event Action<IInventoryData> OnRemoveFromInventory;
 
+    private const int SlotsPerRow = 8;
+
 
     void OnEnable()
     {
-        inventoryUIData = new();
         root = uiDoc.rootVisualElement;
         dragPanel = root.Q(className: "drag-layer");
         FillInventory();
@@ -68,10 +66,6 @@ public abstract class UIManager : MonoBehaviour
         });
 
         amount.text = item.Amount.ToString();
-        //  .SetBinding("text", new DataBinding
-        // {
-        //     dataSourcePath = new PropertyPath("Amount")
-        // });
 
         return itemEl;
     }
@@ -98,7 +92,10 @@ public abstract class UIManager : MonoBehaviour
         InventoryDropContext context = new InventoryDropContext(inventoryData, data, oldSlot, newSlot, from, to);
         InventoryEvents.OnDrop(context);
         if (to == InventoryArea.PlayerInventory)
-            Match3(data, newSlot);
+        {
+            Match3Horizontal(data);
+            Match3Vertical(data);
+        }
     }
 
     private InventoryArea GetInventoryArea(VisualElement slot)
@@ -117,9 +114,9 @@ public abstract class UIManager : MonoBehaviour
         return InventoryArea.None;
     }
 
-    private void Match3(VisualElement item, VisualElement newSlot, int matchAmount = 3)
+    private void Match3Horizontal(VisualElement item, int matchAmount = 3)
     {
-        VisualElement inventory = root.Q(className:INVENTORY_GRID_CLASS);
+        VisualElement inventory = root.Q(className: INVENTORY_GRID_CLASS);
         IInventoryData data = item.dataSource as IInventoryData;
         int key = data.Data.key;
         bool matching = false;
@@ -128,7 +125,7 @@ public abstract class UIManager : MonoBehaviour
 
         for (int i = 0; i < slots.Count; i++)
         {
-            var itemInSlot = slots[i].Q(className:"item");
+            var itemInSlot = slots[i].Q(className: "item");
             if (itemInSlot == null)
             {
                 matching = false;
@@ -157,22 +154,97 @@ public abstract class UIManager : MonoBehaviour
         if (match.Count < matchAmount)
             return;
 
-        int amount = (match[0].dataSource as IInventoryData).Amount;
-        for (int i = 1; i < match.Count; i++)
-        {
-            amount += (match[i].dataSource as IInventoryData).Amount;
-        }
+        ResolveMatch(match, matchAmount);
+    }
 
-        var firstMatchedLabel = match[0].Q<Label>(className: "slot-amount");
-        if (firstMatchedLabel == null)
+    private void Match3Vertical(VisualElement item, int matchAmount = 3)
+    {
+        VisualElement inventory = root.Q(className: INVENTORY_GRID_CLASS);
+
+        if (inventory == null || item == null)
             return;
 
-        firstMatchedLabel.text = amount.ToString();
+        IInventoryData data = item.dataSource as IInventoryData;
+
+        if (data == null || data.Data == null)
+            return;
+
+        int key = data.Data.key;
+
+        List<VisualElement> slots = inventory.Query(className: "slot").ToList();
+
+        int rows = Mathf.CeilToInt(slots.Count / (float)SlotsPerRow);
+
+        for (int column = 0; column < SlotsPerRow; column++)
+        {
+            List<VisualElement> match = new List<VisualElement>();
+
+            for (int row = 0; row < rows; row++)
+            {
+                int index = row * SlotsPerRow + column;
+
+                if (index >= slots.Count)
+                {
+                    ResolveMatch(match, matchAmount);
+                    match.Clear();
+                    break;
+                }
+
+                VisualElement slot = slots[index];
+                VisualElement itemInSlot = slot.Q(className: "item");
+
+                if (itemInSlot == null)
+                {
+                    ResolveMatch(match, matchAmount);
+                    match.Clear();
+                    continue;
+                }
+
+                IInventoryData itemData = itemInSlot.dataSource as IInventoryData;
+
+                if (itemData != null && itemData.Data != null && itemData.Data.key == key)
+                {
+                    match.Add(itemInSlot);
+                }
+                else
+                {
+                    ResolveMatch(match, matchAmount);
+                    match.Clear();
+                }
+            }
+
+            ResolveMatch(match, matchAmount);
+        }
+    }
+
+    private bool ResolveMatch(List<VisualElement> match, int matchAmount)
+    {
+        if (match == null || match.Count < matchAmount)
+            return false;
+
+        int totalAmount = 0;
+
+        for (int i = 0; i < match.Count; i++)
+        {
+            IInventoryData data = match[i].dataSource as IInventoryData;
+
+            if (data != null)
+                totalAmount += data.Amount;
+        }
+
+        VisualElement firstItem = match[0];
+
+        Label firstMatchedLabel = firstItem.Q<Label>(className: "slot-amount");
+
+        if (firstMatchedLabel != null)
+            firstMatchedLabel.text = totalAmount.ToString();
 
         for (int i = 1; i < match.Count; i++)
         {
             match[i].dataSource = null;
             match[i].RemoveFromHierarchy();
         }
+
+        return true;
     }
 }
