@@ -67,10 +67,11 @@ public abstract class UIManager : MonoBehaviour
             dataSourcePath = new PropertyPath("Data.icon")
         });
 
-        amount.SetBinding("text", new DataBinding
-        {
-            dataSourcePath = new PropertyPath("Amount")
-        });
+        amount.text = item.Amount.ToString();
+        //  .SetBinding("text", new DataBinding
+        // {
+        //     dataSourcePath = new PropertyPath("Amount")
+        // });
 
         return itemEl;
     }
@@ -127,7 +128,7 @@ public abstract class UIManager : MonoBehaviour
 
         for (int i = 0; i < slots.Count; i++)
         {
-            var itemInSlot = slots[i].Q("item");
+            var itemInSlot = slots[i].Q(className:"item");
             if (itemInSlot == null)
             {
                 matching = false;
