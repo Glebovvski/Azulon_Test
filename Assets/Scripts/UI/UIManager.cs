@@ -19,7 +19,7 @@ public abstract class UIManager : MonoBehaviour
     {
         inventoryUIData = new();
         root = uiDoc.rootVisualElement;
-        dragPanel = root.Q(className:"drag-panel");
+        dragPanel = root.Q(className:"drag-layer");
         FillInventory();
     }
 

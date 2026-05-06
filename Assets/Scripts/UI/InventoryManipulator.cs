@@ -49,12 +49,34 @@ public class InventoryManipulator : PointerManipulator
         target.style.position = Position.Absolute;
         isDragging = true;
 
-        // parentSlot.Remove(target);
-        // mainParent.Add(target);
+        startPosElement = target.worldBound.position;
+        parentSlot.Remove(target);
+        mainParent.Add(target);
 
         startPosPointer = evt.position;
-        startPosElement = target.worldBound.position;
 
+        Rect worldRect = target.worldBound;
+        Vector2 localMin = mainParent.WorldToLocal(worldRect.min);
+        Vector2 localMax = mainParent.WorldToLocal(worldRect.max);
+
+        target.style.width = Mathf.Abs(localMax.x - localMin.x);
+        target.style.height = Mathf.Abs(localMax.y - localMin.y);
+
+        target.style.left = localMin.x;
+        target.style.top = localMin.y;
+
+        target.style.marginLeft = 0;
+        target.style.marginTop = 0;
+        target.style.marginRight = 0;
+        target.style.marginBottom = 0;
+Vector2 pointerCurrentPos = evt.position;
+        Vector2 pointerDelta = pointerCurrentPos - startPosPointer;
+
+        Vector2 currentPosWorld = startPosElement + pointerDelta;
+        Vector2 currentPosLocal = mainParent.WorldToLocal(currentPosWorld);
+
+        target.style.left = currentPosLocal.x;
+        target.style.top = currentPosLocal.y;
         target.BringToFront();
 
         target.CapturePointer(evt.pointerId);
@@ -69,12 +91,11 @@ public class InventoryManipulator : PointerManipulator
         VisualElement parent = target.parent;
         if (parent == null)
             return;
-        Debug.LogError($"parent: {parent.name}");
         Vector2 pointerCurrentPos = evt.position;
         Vector2 pointerDelta = pointerCurrentPos - startPosPointer;
 
         Vector2 currentPosWorld = startPosElement + pointerDelta;
-        Vector2 currentPosLocal = parent.WorldToLocal(currentPosWorld);
+        Vector2 currentPosLocal = mainParent.WorldToLocal(currentPosWorld);
 
         target.style.left = currentPosLocal.x;
         target.style.top = currentPosLocal.y;
@@ -120,7 +141,7 @@ public class InventoryManipulator : PointerManipulator
     {
         target.RemoveFromHierarchy();
         slot.Add(target);
-        
+
         target.style.position = Position.Relative;
         target.style.left = StyleKeyword.Auto;
         target.style.top = StyleKeyword.Auto;
@@ -134,14 +155,13 @@ public class InventoryManipulator : PointerManipulator
         if (target.panel == null)
             return null;
 
-        Debug.LogError($"panel: {target.panel}");
         var root = target.panel.visualTree;
-        var slotsRoots = root.Query(className:slotContainerName).ToList();
+        var slotsRoots = root.Query(className: slotContainerName).ToList();
         if (slotsRoots == null || slotsRoots.Count == 0)
             return null;
 
         List<VisualElement> slots = new();
-        foreach(var slotRoot in slotsRoots)
+        foreach (var slotRoot in slotsRoots)
         {
             slots.AddRange(slotRoot.Query(className: "slot").ToList());
         }
