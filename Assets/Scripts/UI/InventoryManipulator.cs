@@ -69,7 +69,17 @@ public class InventoryManipulator : PointerManipulator
         target.style.marginTop = 0;
         target.style.marginRight = 0;
         target.style.marginBottom = 0;
-Vector2 pointerCurrentPos = evt.position;
+
+        ResolvePosition(evt.position);
+        target.BringToFront();
+
+        target.CapturePointer(evt.pointerId);
+        evt.StopPropagation();
+    }
+
+    private void ResolvePosition(Vector2 position)
+    {
+        Vector2 pointerCurrentPos = position;
         Vector2 pointerDelta = pointerCurrentPos - startPosPointer;
 
         Vector2 currentPosWorld = startPosElement + pointerDelta;
@@ -77,10 +87,6 @@ Vector2 pointerCurrentPos = evt.position;
 
         target.style.left = currentPosLocal.x;
         target.style.top = currentPosLocal.y;
-        target.BringToFront();
-
-        target.CapturePointer(evt.pointerId);
-        evt.StopPropagation();
     }
 
     private void OnPointerMove(PointerMoveEvent evt)
@@ -91,14 +97,8 @@ Vector2 pointerCurrentPos = evt.position;
         VisualElement parent = target.parent;
         if (parent == null)
             return;
-        Vector2 pointerCurrentPos = evt.position;
-        Vector2 pointerDelta = pointerCurrentPos - startPosPointer;
 
-        Vector2 currentPosWorld = startPosElement + pointerDelta;
-        Vector2 currentPosLocal = mainParent.WorldToLocal(currentPosWorld);
-
-        target.style.left = currentPosLocal.x;
-        target.style.top = currentPosLocal.y;
+        ResolvePosition(evt.position);
 
         evt.StopPropagation();
     }
@@ -125,16 +125,6 @@ Vector2 pointerCurrentPos = evt.position;
         SnapToSlot(closestSlot);
         isDragging = false;
         OnDrop?.Invoke(target, closestSlot);
-    }
-
-    private void SnapToStart()
-    {
-        if (target.parent == null)
-            return;
-
-        Vector2 localStart = target.parent.WorldToLocal(startPosElement);
-        target.style.left = localStart.x;
-        target.style.top = localStart.y;
     }
 
     private void SnapToSlot(VisualElement slot)
