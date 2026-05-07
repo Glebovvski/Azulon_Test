@@ -1,6 +1,66 @@
 .title {
     height: 10%;
     width: 100%;
+    scale: 1 1;
+    transition-property: scale;
+    transition-duration: 0.3s;
+}
+
+.title-label {
+    align-self: center;
+    color: #31AFBA;
+    font-size: 55px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    text-shadow: 3.2px 3.9px 5.8px rgb(13, 71, 143);
+    letter-spacing: 27px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0);
+    -unity-text-outline-width: 0;
+    transition-property: -unity-text-outline-width;
+    transition-duration: 0.3s;
+}
+
+.title-label-hover {
+    -unity-text-outline-width: 3px;
+}
+
+.panel {
+    width: 50%;
+    scale: 1 1;
+    transition-property: scale;
+    transition-duration: 0.3s;
+    flex-grow: 0;
+    flex-shrink: 0;
+    margin-right: 15px;
+    -unity-background-image-tint-color: rgba(0, 0, 0, 0);
+    background-color: rgb(37, 120, 190);
+    border-right-color: rgb(176, 76, 13);
+    border-right-width: 11px;
+    border-left-color: rgb(176, 76, 13);
+    border-top-color: rgb(176, 76, 13);
+    border-bottom-color: rgb(176, 76, 13);
+    border-top-width: 11px;
+    border-bottom-width: 11px;
+    border-left-width: 11px;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-bottom-left-radius: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.hover-over {
+    scale: 1.005 1;
+}
+
+.hover-title {
+    scale: 1.2 1.2;
 }
 
 .slot {
@@ -80,9 +140,8 @@
     transition-timing-function: ease-in-back;
 }
 
-.item-destroy
-{
-    scale: 0%;
+.item-destroy {
+    scale: 0;
 }
 
 .tooltip {
@@ -118,4 +177,3 @@
     height: 100%;
     opacity: 0.23;
 }
-

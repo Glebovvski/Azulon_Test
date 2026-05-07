@@ -15,14 +15,12 @@ public abstract class UIManager : MonoBehaviour
     protected VisualElement root;
     protected VisualElement panel;
     protected VisualElement dragPanel;
-
+    protected VisualElement mainPanel;
+    protected VisualElement title;
+    protected VisualElement titleLabel;
     private IVisualElementScheduledItem scheduler;
 
-    public event Action<IInventoryData> OnAddToInventory;
-    public event Action<IInventoryData> OnRemoveFromInventory;
-
     private const int SlotsPerRow = 8;
-
 
     void OnEnable()
     {
@@ -278,9 +276,29 @@ public abstract class UIManager : MonoBehaviour
         }).StartingIn(delay);
     }
 
-    private void CancelScheduled()
+    protected void RegisterHoverForMainPanel()
     {
-        scheduler?.Pause();
-        scheduler = null;
+        mainPanel.RegisterCallback<PointerOverEvent>(MouseEnterPanel);
+        mainPanel.RegisterCallback<PointerOutEvent>(MouseLeavePanel);
+    }
+
+    void OnDisable()
+    {
+        mainPanel.UnregisterCallback<PointerOverEvent>(MouseEnterPanel);
+        mainPanel.UnregisterCallback<PointerOutEvent>(MouseLeavePanel);
+    }
+
+    private void MouseLeavePanel(PointerOutEvent evt)
+    {
+        mainPanel.RemoveFromClassList("hover-over");
+        title.RemoveFromClassList("hover-title");
+        titleLabel.RemoveFromClassList("title-label-hover");
+    }
+
+    private void MouseEnterPanel(PointerOverEvent evt)
+    {
+        mainPanel.AddToClassList("hover-over");
+        title.AddToClassList("hover-title");
+        titleLabel.AddToClassList("title-label-hover");
     }
 }

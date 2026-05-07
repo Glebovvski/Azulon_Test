@@ -4,6 +4,10 @@ public class WorldUIManager : UIManager
 {
     protected override void FillInventory()
     {
+        mainPanel = root.Q("WorldInventory");
+        title = mainPanel.Q(className: "title");
+        titleLabel = mainPanel.Q(className: "title-label");
+        RegisterHoverForMainPanel();
         panel = root.Q(className: WORLD_GRID_CLASS);
         foreach (var item in dataList.List)
         {
