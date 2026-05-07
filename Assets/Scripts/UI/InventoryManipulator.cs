@@ -119,7 +119,7 @@ namespace UI.Controller
 
             VisualElement closestSlot = FindClosestSlot(true);
             if (closestSlot == null)
-                closestSlot = target.parent;
+                closestSlot = parentSlot;
             SnapToSlot(closestSlot);
             if (replaceDataInSlot != null)
             {
