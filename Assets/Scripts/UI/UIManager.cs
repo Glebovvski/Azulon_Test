@@ -1,304 +1,315 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using Data;
+using ScriptableData;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public abstract class UIManager : MonoBehaviour
+namespace UI.Document
 {
-    protected const string INVENTORY_GRID_CLASS = "inventory";
-    protected const string WORLD_GRID_CLASS = "world";
-    [SerializeField] protected InventoryListScriptableData dataList;
-    [SerializeField] protected UIDocument uiDoc;
-    [SerializeField] protected long delay = 200000;
-    protected VisualElement root;
-    protected VisualElement panel;
-    protected VisualElement dragPanel;
-    protected VisualElement mainPanel;
-    protected VisualElement title;
-    protected VisualElement titleLabel;
-    private IVisualElementScheduledItem scheduler;
-
-    private const int SlotsPerRow = 8;
-
-    void OnEnable()
+    public abstract class UIManager : MonoBehaviour
     {
-        root = uiDoc.rootVisualElement;
-        dragPanel = root.Q(className: "drag-layer");
-        FillInventory();
-    }
+        private const string ItemDestroyClassName = "item-destroy";
+        private const string HoverOverClassName = "hover-over";
+        private const string HoverTitleClassName = "hover-title";
+        private const string TitleLabelHoverClassName = "title-label-hover";
+        private const string IconPath = "Data.icon";
 
-    protected abstract void FillInventory();
+        [SerializeField] protected InventoryListScriptableData dataList;
+        [SerializeField] protected UIDocument uiDoc;
+        [SerializeField] protected long delay = 200000;
+        protected VisualElement root;
+        protected VisualElement panel;
+        protected VisualElement dragPanel;
+        protected VisualElement mainPanel;
+        protected VisualElement title;
+        protected VisualElement titleLabel;
+        private IVisualElementScheduledItem scheduler;
 
-    protected VisualElement CreateSlot()
-    {
-        VisualElement slot = new VisualElement();
-        slot.pickingMode = PickingMode.Ignore;
-        slot.AddToClassList("slot");
-        slot.name = "slot";
+        private const int SlotsPerRow = 8;
 
-        return slot;
-    }
-
-    protected VisualElement CreateItem(IInventoryData item)
-    {
-        VisualElement itemEl = new VisualElement();
-        itemEl.AddToClassList("item");
-        itemEl.name = "item";
-
-        Image image = new Image();
-        image.AddToClassList("slot-image");
-        image.pickingMode = PickingMode.Ignore;
-
-        Label amount = new Label();
-        amount.AddToClassList("slot-amount");
-        amount.pickingMode = PickingMode.Ignore;
-
-        itemEl.name = item.Data.name;
-
-        image.Add(amount);
-        itemEl.Add(image);
-
-        itemEl.dataSource = item;
-
-        image.SetBinding("sprite", new DataBinding
+        void OnEnable()
         {
-            dataSourcePath = new PropertyPath("Data.icon")
-        });
-
-        amount.text = item.Amount.ToString();
-
-        return itemEl;
-    }
-
-
-    protected virtual void OnDrop(VisualElement data, VisualElement oldSlot, VisualElement newSlot)
-    {
-        if (data == null || newSlot == null || oldSlot == null)
-        {
-            Debug.LogError($"Something went wrong on drag {data.userData} {newSlot} {oldSlot}");
-            return;
+            root = uiDoc.rootVisualElement;
+            dragPanel = root.Q(className: UIDocumentConsts.DragLayerClassName);
+            FillInventory();
         }
 
-        IInventoryData inventoryData = data.dataSource as IInventoryData;
-        if (inventoryData == null)
+        protected abstract void FillInventory();
+
+        protected void InitMainPanelElements(string panelName)
         {
-            Debug.LogError($"No InventoryData: {data.name}");
-            return;
+            mainPanel = root.Q(panelName);
+            title = mainPanel.Q(className: UIDocumentConsts.TitleClassName);
+            titleLabel = mainPanel.Q(className: UIDocumentConsts.TitleLabelClassName);
+            RegisterHoverForMainPanel();
         }
 
-        InventoryArea from = GetInventoryArea(oldSlot);
-        InventoryArea to = GetInventoryArea(newSlot);
-
-        InventoryDropContext context = new InventoryDropContext(inventoryData, data, oldSlot, newSlot, from, to);
-        InventoryEvents.OnDrop(context);
-        if (to == InventoryArea.PlayerInventory)
+        protected VisualElement CreateSlot()
         {
-            Match3Horizontal(data);
-            Match3Vertical(data);
-        }
-    }
+            VisualElement slot = new VisualElement();
+            slot.pickingMode = PickingMode.Ignore;
+            slot.AddToClassList(UIDocumentConsts.SlotClassName);
 
-    private InventoryArea GetInventoryArea(VisualElement slot)
-    {
-        if (slot == null || slot.parent == null)
+            return slot;
+        }
+
+        protected VisualElement CreateItem(IInventoryData item)
+        {
+            VisualElement itemEl = new VisualElement();
+            itemEl.AddToClassList(UIDocumentConsts.ItemClassName);
+
+            Image image = new Image();
+            image.AddToClassList(UIDocumentConsts.SlotImageClassName);
+            image.pickingMode = PickingMode.Ignore;
+
+            Label amount = new Label();
+            amount.AddToClassList(UIDocumentConsts.SlotAmountClassName);
+            amount.pickingMode = PickingMode.Ignore;
+
+            itemEl.name = item.Data.name;
+
+            image.Add(amount);
+            itemEl.Add(image);
+
+            itemEl.dataSource = item;
+
+            image.SetBinding("sprite", new DataBinding
+            {
+                dataSourcePath = new PropertyPath(IconPath)
+            });
+
+            amount.text = item.Amount.ToString();
+
+            return itemEl;
+        }
+
+
+        protected virtual void OnDrop(VisualElement data, VisualElement oldSlot, VisualElement newSlot)
+        {
+            if (data == null || newSlot == null || oldSlot == null)
+            {
+                return;
+            }
+
+            IInventoryData inventoryData = data.dataSource as IInventoryData;
+            if (inventoryData == null)
+            {
+                Debug.LogError($"No InventoryData: {data.name}");
+                return;
+            }
+
+            InventoryArea from = GetInventoryArea(oldSlot);
+            InventoryArea to = GetInventoryArea(newSlot);
+
+            InventoryDropContext context = new InventoryDropContext(inventoryData, data, oldSlot, newSlot, from, to);
+            InventoryEvents.OnDrop(context);
+            if (to == InventoryArea.PlayerInventory)
+            {
+                Match3Horizontal(data);
+                Match3Vertical(data);
+            }
+        }
+
+        private InventoryArea GetInventoryArea(VisualElement slot)
+        {
+            if (slot == null || slot.parent == null)
+                return InventoryArea.None;
+
+            VisualElement grid = slot.parent;
+
+            if (grid.ClassListContains(UIDocumentConsts.WorldGridClassName))
+                return InventoryArea.World;
+
+            if (grid.ClassListContains(UIDocumentConsts.InventoryGridClassName))
+                return InventoryArea.PlayerInventory;
+
             return InventoryArea.None;
-
-        VisualElement grid = slot.parent;
-
-        if (grid.ClassListContains(WORLD_GRID_CLASS))
-            return InventoryArea.World;
-
-        if (grid.ClassListContains(INVENTORY_GRID_CLASS))
-            return InventoryArea.PlayerInventory;
-
-        return InventoryArea.None;
-    }
-
-    private void Match3Horizontal(VisualElement item, int matchAmount = 3)
-    {
-        VisualElement inventory = root.Q(className: INVENTORY_GRID_CLASS);
-        IInventoryData data = item.dataSource as IInventoryData;
-        int key = data.Data.key;
-        bool matching = false;
-        List<VisualElement> match = new();
-        var slots = inventory.Query(className: "slot").ToList();
-
-        for (int i = 0; i < slots.Count; i++)
-        {
-            var itemInSlot = slots[i].Q(className: "item");
-            if (itemInSlot == null)
-            {
-                matching = false;
-                if (match.Count < matchAmount)
-                {
-                    match.Clear();
-                }
-                continue;
-            }
-            var itemData = itemInSlot.dataSource as IInventoryData;
-            if (itemData.Data.key == key)
-            {
-                match.Add(itemInSlot);
-                matching = true;
-            }
-            else
-            {
-                if (match.Count < matchAmount)
-                {
-                    match.Clear();
-                }
-                matching = false;
-            }
         }
 
-        if (match.Count < matchAmount)
-            return;
-
-        ResolveMatch(match, matchAmount);
-    }
-
-    private void Match3Vertical(VisualElement item, int matchAmount = 3)
-    {
-        VisualElement inventory = root.Q(className: INVENTORY_GRID_CLASS);
-
-        if (inventory == null || item == null)
-            return;
-
-        IInventoryData data = item.dataSource as IInventoryData;
-
-        if (data == null || data.Data == null)
-            return;
-
-        int key = data.Data.key;
-
-        List<VisualElement> slots = inventory.Query(className: "slot").ToList();
-
-        int rows = Mathf.CeilToInt(slots.Count / (float)SlotsPerRow);
-
-        for (int column = 0; column < SlotsPerRow; column++)
+        private void Match3Horizontal(VisualElement item, int matchAmount = 3)
         {
-            List<VisualElement> match = new List<VisualElement>();
+            VisualElement inventory = root.Q(className: UIDocumentConsts.InventoryGridClassName);
+            IInventoryData data = item.dataSource as IInventoryData;
+            int key = data.Data.key;
+            bool matching = false;
+            List<VisualElement> match = new();
+            var slots = inventory.Query(className: UIDocumentConsts.SlotClassName).ToList();
 
-            for (int row = 0; row < rows; row++)
+            for (int i = 0; i < slots.Count; i++)
             {
-                int index = row * SlotsPerRow + column;
-
-                if (index >= slots.Count)
-                {
-                    ResolveMatch(match, matchAmount);
-                    match.Clear();
-                    break;
-                }
-
-                VisualElement slot = slots[index];
-                VisualElement itemInSlot = slot.Q(className: "item");
-
+                var itemInSlot = slots[i].Q(className: UIDocumentConsts.ItemClassName);
                 if (itemInSlot == null)
                 {
-                    ResolveMatch(match, matchAmount);
-                    match.Clear();
+                    matching = false;
+                    if (match.Count < matchAmount)
+                    {
+                        match.Clear();
+                    }
                     continue;
                 }
-
-                IInventoryData itemData = itemInSlot.dataSource as IInventoryData;
-
-                if (itemData != null && itemData.Data != null && itemData.Data.key == key)
+                var itemData = itemInSlot.dataSource as IInventoryData;
+                if (itemData.Data.key == key)
                 {
                     match.Add(itemInSlot);
+                    matching = true;
                 }
                 else
                 {
-                    ResolveMatch(match, matchAmount);
-                    match.Clear();
+                    if (match.Count < matchAmount)
+                    {
+                        match.Clear();
+                    }
+                    matching = false;
                 }
             }
 
+            if (match.Count < matchAmount)
+                return;
+
             ResolveMatch(match, matchAmount);
         }
-    }
 
-    private bool ResolveMatch(List<VisualElement> match, int matchAmount)
-    {
-        if (match == null || match.Count < matchAmount)
-            return false;
-
-        int totalAmount = 0;
-
-        for (int i = 0; i < match.Count; i++)
+        private void Match3Vertical(VisualElement item, int matchAmount = 3)
         {
-            IInventoryData data = match[i].dataSource as IInventoryData;
+            VisualElement inventory = root.Q(className: UIDocumentConsts.InventoryGridClassName);
 
-            if (data != null)
-                totalAmount += data.Amount;
+            if (inventory == null || item == null)
+                return;
+
+            IInventoryData data = item.dataSource as IInventoryData;
+
+            if (data == null || data.Data == null)
+                return;
+
+            int key = data.Data.key;
+
+            List<VisualElement> slots = inventory.Query(className: UIDocumentConsts.SlotClassName).ToList();
+
+            int rows = Mathf.CeilToInt(slots.Count / (float)SlotsPerRow);
+
+            for (int column = 0; column < SlotsPerRow; column++)
+            {
+                List<VisualElement> match = new List<VisualElement>();
+
+                for (int row = 0; row < rows; row++)
+                {
+                    int index = row * SlotsPerRow + column;
+
+                    if (index >= slots.Count)
+                    {
+                        ResolveMatch(match, matchAmount);
+                        match.Clear();
+                        break;
+                    }
+
+                    VisualElement slot = slots[index];
+                    VisualElement itemInSlot = slot.Q(className: UIDocumentConsts.ItemClassName);
+
+                    if (itemInSlot == null)
+                    {
+                        ResolveMatch(match, matchAmount);
+                        match.Clear();
+                        continue;
+                    }
+
+                    IInventoryData itemData = itemInSlot.dataSource as IInventoryData;
+
+                    if (itemData != null && itemData.Data != null && itemData.Data.key == key)
+                    {
+                        match.Add(itemInSlot);
+                    }
+                    else
+                    {
+                        ResolveMatch(match, matchAmount);
+                        match.Clear();
+                    }
+                }
+
+                ResolveMatch(match, matchAmount);
+            }
         }
 
-        VisualElement firstItem = match[0];
-
-        Label firstMatchedLabel = firstItem.Q<Label>(className: "slot-amount");
-
-        if (firstMatchedLabel != null)
-            firstMatchedLabel.text = totalAmount.ToString();
-
-        VisualElement[] itemsToDestroy = new VisualElement[match.Count - 1];
-        for (int i = 1; i < match.Count; i++)
+        private bool ResolveMatch(List<VisualElement> match, int matchAmount)
         {
-            itemsToDestroy[i - 1] = match[i];
+            if (match == null || match.Count < matchAmount)
+                return false;
+
+            int totalAmount = 0;
+
+            for (int i = 0; i < match.Count; i++)
+            {
+                IInventoryData data = match[i].dataSource as IInventoryData;
+
+                if (data != null)
+                    totalAmount += data.Amount;
+            }
+
+            VisualElement firstItem = match[0];
+
+            Label firstMatchedLabel = firstItem.Q<Label>(className: UIDocumentConsts.SlotAmountClassName);
+
+            if (firstMatchedLabel != null)
+                firstMatchedLabel.text = totalAmount.ToString();
+
+            VisualElement[] itemsToDestroy = new VisualElement[match.Count - 1];
+            for (int i = 1; i < match.Count; i++)
+            {
+                itemsToDestroy[i - 1] = match[i];
+            }
+            ScheduleDisappear(itemsToDestroy);
+            ScheduleDestroy(itemsToDestroy);
+
+            return true;
         }
-        ScheduleDisappear(itemsToDestroy);
-        ScheduleDestroy(itemsToDestroy);
 
-        return true;
-    }
-
-    private void ScheduleDisappear(VisualElement[] items)
-    {
-        scheduler = root.schedule.Execute(() =>
+        private void ScheduleDisappear(VisualElement[] items)
         {
-            foreach (var item in items)
+            scheduler = root.schedule.Execute(() =>
             {
-                item.AddToClassList("item-destroy");
-            }
-        }).StartingIn(10);
-    }
+                foreach (var item in items)
+                {
+                    item.AddToClassList(ItemDestroyClassName);
+                }
+            }).StartingIn(10);
+        }
 
-    private void ScheduleDestroy(VisualElement[] items)
-    {
-        // CancelScheduled();
-        scheduler = root.schedule.Execute(() =>
+        private void ScheduleDestroy(VisualElement[] items)
         {
-            foreach (var item in items)
+            scheduler = root.schedule.Execute(() =>
             {
-                item.dataSource = null;
-                item.RemoveFromHierarchy();
-            }
-        }).StartingIn(delay);
-    }
+                foreach (var item in items)
+                {
+                    item.dataSource = null;
+                    item.RemoveFromHierarchy();
+                }
+            }).StartingIn(delay);
+        }
 
-    protected void RegisterHoverForMainPanel()
-    {
-        mainPanel.RegisterCallback<PointerOverEvent>(MouseEnterPanel);
-        mainPanel.RegisterCallback<PointerOutEvent>(MouseLeavePanel);
-    }
+        protected void RegisterHoverForMainPanel()
+        {
+            mainPanel.RegisterCallback<PointerOverEvent>(MouseEnterPanel);
+            mainPanel.RegisterCallback<PointerOutEvent>(MouseLeavePanel);
+        }
 
-    void OnDisable()
-    {
-        mainPanel.UnregisterCallback<PointerOverEvent>(MouseEnterPanel);
-        mainPanel.UnregisterCallback<PointerOutEvent>(MouseLeavePanel);
-    }
+        void OnDisable()
+        {
+            mainPanel.UnregisterCallback<PointerOverEvent>(MouseEnterPanel);
+            mainPanel.UnregisterCallback<PointerOutEvent>(MouseLeavePanel);
+        }
 
-    private void MouseLeavePanel(PointerOutEvent evt)
-    {
-        mainPanel.RemoveFromClassList("hover-over");
-        title.RemoveFromClassList("hover-title");
-        titleLabel.RemoveFromClassList("title-label-hover");
-    }
+        private void MouseLeavePanel(PointerOutEvent evt)
+        {
+            mainPanel.RemoveFromClassList(HoverOverClassName);
+            title.RemoveFromClassList(HoverTitleClassName);
+            titleLabel.RemoveFromClassList(TitleLabelHoverClassName);
+        }
 
-    private void MouseEnterPanel(PointerOverEvent evt)
-    {
-        mainPanel.AddToClassList("hover-over");
-        title.AddToClassList("hover-title");
-        titleLabel.AddToClassList("title-label-hover");
+        private void MouseEnterPanel(PointerOverEvent evt)
+        {
+            mainPanel.AddToClassList(HoverOverClassName);
+            title.AddToClassList(HoverTitleClassName);
+            titleLabel.AddToClassList(TitleLabelHoverClassName);
+        }
     }
 }

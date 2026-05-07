@@ -1,23 +1,24 @@
+using UI.Controller;
 using UnityEngine.UIElements;
 
-public class WorldUIManager : UIManager
+namespace UI.Document
 {
-    protected override void FillInventory()
+    public class WorldUIManager : UIManager
     {
-        mainPanel = root.Q("WorldInventory");
-        title = mainPanel.Q(className: "title");
-        titleLabel = mainPanel.Q(className: "title-label");
-        RegisterHoverForMainPanel();
-        panel = root.Q(className: WORLD_GRID_CLASS);
-        foreach (var item in dataList.List)
+        protected override void FillInventory()
         {
-            for (int j = 0; j < item.Amount; j++)
+            InitMainPanelElements(UIDocumentConsts.WorldInventoryName);
+            panel = root.Q(className: UIDocumentConsts.WorldGridClassName);
+            foreach (var item in dataList.List)
             {
-                var slot = CreateSlot();
-                var inventoryItem = CreateItem(item);
-                slot.Add(inventoryItem);
-                inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, dragPanel, OnDrop));
-                panel.Add(slot);
+                for (int j = 0; j < item.Amount; j++)
+                {
+                    var slot = CreateSlot();
+                    var inventoryItem = CreateItem(item);
+                    slot.Add(inventoryItem);
+                    inventoryItem.AddManipulator(new InventoryManipulator(inventoryItem, dragPanel, OnDrop));
+                    panel.Add(slot);
+                }
             }
         }
     }

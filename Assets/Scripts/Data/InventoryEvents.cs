@@ -1,16 +1,18 @@
 using System;
-
-public static class InventoryEvents
+namespace Data
 {
-    public static event Action<InventoryDropContext> OnItemDropped;
-
-    public static void OnDrop(InventoryDropContext context)
+    public static class InventoryEvents
     {
-        OnItemDropped?.Invoke(context);
-    }
+        public static event Action<InventoryDropContext> OnItemDropped;
 
-    private static void Reset()
-    {
-        OnItemDropped = null;
+        public static void OnDrop(InventoryDropContext context)
+        {
+            OnItemDropped?.Invoke(context);
+        }
+
+        private static void Reset()
+        {
+            OnItemDropped = null;
+        }
     }
 }

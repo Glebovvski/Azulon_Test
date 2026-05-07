@@ -1,81 +1,84 @@
-using System;
+using ScriptableData;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class TooltipController : MonoBehaviour
+namespace UI.Controller
 {
-    [SerializeField] private UIDocument uiDoc;
-    [SerializeField] private Vector3 offset = new Vector3(20f, 50f, 0f);
-
-    private VisualElement root;
-    private VisualElement tooltip;
-    private Label tooltipNameLabel;
-    private Label tooltipDescriptionLabel;
-
-    void Awake()
+    public class TooltipController : MonoBehaviour
     {
-        root = uiDoc.rootVisualElement;
-        tooltip = root.Q(className: "tooltip");
-        tooltipNameLabel = root.Q<Label>(className: "tooltip-name");
-        tooltipDescriptionLabel = root.Q<Label>(className: "tooltip-description");
-    }
+        [SerializeField] private UIDocument uiDoc;
+        [SerializeField] private Vector3 offset = new Vector3(20f, 50f, 0f);
 
-    void OnEnable()
-    {
-        root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
-        root.RegisterCallback<PointerLeaveEvent>(OnPointerLeave);
-        root.RegisterCallback<PointerDownEvent>(OnPointerDown);
-    }
+        private VisualElement root;
+        private VisualElement tooltip;
+        private Label tooltipNameLabel;
+        private Label tooltipDescriptionLabel;
 
-    void OnDisable()
-    {
-        root.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
-        root.UnregisterCallback<PointerLeaveEvent>(OnPointerLeave);
-        root.UnregisterCallback<PointerDownEvent>(OnPointerDown);
-    }
-
-    private void OnPointerMove(PointerMoveEvent evt)
-    {
-        if (evt.target is not VisualElement item)
+        void Awake()
         {
-            HideTooltip();
-            return;
-        }
-        var data = item.dataSource as IInventoryData;
-
-        if (data == null)
-        {
-            HideTooltip();
-            return;
+            root = uiDoc.rootVisualElement;
+            tooltip = root.Q(className: "tooltip");
+            tooltipNameLabel = root.Q<Label>(className: "tooltip-name");
+            tooltipDescriptionLabel = root.Q<Label>(className: "tooltip-description");
         }
 
-        ShowTooltip(data, evt.position + offset);
+        void OnEnable()
+        {
+            root.RegisterCallback<PointerMoveEvent>(OnPointerMove);
+            root.RegisterCallback<PointerLeaveEvent>(OnPointerLeave);
+            root.RegisterCallback<PointerDownEvent>(OnPointerDown);
+        }
 
-    }
+        void OnDisable()
+        {
+            root.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
+            root.UnregisterCallback<PointerLeaveEvent>(OnPointerLeave);
+            root.UnregisterCallback<PointerDownEvent>(OnPointerDown);
+        }
 
-    private void ShowTooltip(IInventoryData data, Vector3 position)
-    {
-        tooltipNameLabel.text = data.Data.name;
-        tooltipDescriptionLabel.text = data.Data.description;
-        tooltip.style.left = position.x;
-        tooltip.style.top = position.y;
-        tooltip.AddToClassList("tooltip-active");
-    }
+        private void OnPointerMove(PointerMoveEvent evt)
+        {
+            if (evt.target is not VisualElement item)
+            {
+                HideTooltip();
+                return;
+            }
+            var data = item.dataSource as IInventoryData;
 
-    private void HideTooltip()
-    {
-        tooltipNameLabel.text = string.Empty;
-        tooltipDescriptionLabel.text = string.Empty;
-        tooltip.RemoveFromClassList("tooltip-active");
-    }
+            if (data == null)
+            {
+                HideTooltip();
+                return;
+            }
 
-    private void OnPointerLeave(PointerLeaveEvent evt)
-    {
-        HideTooltip();
-    }
+            ShowTooltip(data, evt.position + offset);
 
-    private void OnPointerDown(PointerDownEvent evt)
-    {
-        HideTooltip();
+        }
+
+        private void ShowTooltip(IInventoryData data, Vector3 position)
+        {
+            tooltipNameLabel.text = data.Data.name;
+            tooltipDescriptionLabel.text = data.Data.description;
+            tooltip.style.left = position.x;
+            tooltip.style.top = position.y;
+            tooltip.AddToClassList("tooltip-active");
+        }
+
+        private void HideTooltip()
+        {
+            tooltipNameLabel.text = string.Empty;
+            tooltipDescriptionLabel.text = string.Empty;
+            tooltip.RemoveFromClassList("tooltip-active");
+        }
+
+        private void OnPointerLeave(PointerLeaveEvent evt)
+        {
+            HideTooltip();
+        }
+
+        private void OnPointerDown(PointerDownEvent evt)
+        {
+            HideTooltip();
+        }
     }
 }
